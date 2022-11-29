@@ -28,8 +28,9 @@ exports[`Storyshots app/pages/collectivite/Users/components/MembreListTableRow A
       data-test="fonction-dropdown"
     >
       <button
+        aria-expanded={false}
         aria-label="ouvrir le menu"
-        className="flex items-center w-full p-2 -ml-2 text-left text-sm"
+        className="flex items-center w-full p-2 text-left text-sm"
         onBlur={[Function]}
         onClick={[Function]}
         onFocus={[Function]}
@@ -39,12 +40,12 @@ exports[`Storyshots app/pages/collectivite/Users/components/MembreListTableRow A
         onPointerDown={[Function]}
       >
         <span
-          className="mr-auto"
+          className="mr-auto flex line-clamp-1"
         >
           Référent·e
         </span>
         <span
-          className="fr-fi-arrow-down-s-line mt-1 ml-1 scale-90 "
+          className="fr-fi-arrow-down-s-line mt-1 ml-1 scale-90"
         />
       </button>
     </div>
@@ -56,8 +57,9 @@ exports[`Storyshots app/pages/collectivite/Users/components/MembreListTableRow A
       data-test="champ_intervention-dropdown"
     >
       <button
+        aria-expanded={false}
         aria-label="ouvrir le menu"
-        className="flex items-center w-full p-2 -ml-2 text-left text-sm"
+        className="flex items-center w-full p-2 text-left text-sm"
         onBlur={[Function]}
         onClick={[Function]}
         onFocus={[Function]}
@@ -67,14 +69,14 @@ exports[`Storyshots app/pages/collectivite/Users/components/MembreListTableRow A
         onPointerDown={[Function]}
       >
         <span
-          className="mr-auto flex flex-col"
+          className="mr-auto flex flex-col gap-2"
         >
-          <span>
+          <div>
             Climat Air Énergie
-          </span>
+          </div>
         </span>
         <span
-          className="fr-fi-arrow-down-s-line mt-1 ml-1 scale-90 "
+          className="fr-fi-arrow-down-s-line mt-1 ml-1 scale-90"
         />
       </button>
     </div>
@@ -101,8 +103,9 @@ exports[`Storyshots app/pages/collectivite/Users/components/MembreListTableRow A
       data-test="acces-dropdown"
     >
       <button
+        aria-expanded={false}
         aria-label="ouvrir le menu"
-        className="flex items-center w-full p-2 -ml-2 text-left text-sm"
+        className="flex items-center w-full p-2 text-left text-sm"
         onBlur={[Function]}
         onClick={[Function]}
         onFocus={[Function]}
@@ -117,7 +120,7 @@ exports[`Storyshots app/pages/collectivite/Users/components/MembreListTableRow A
           Admin
         </span>
         <span
-          className="fr-fi-arrow-down-s-line mt-1 ml-1 scale-90 "
+          className="fr-fi-arrow-down-s-line mt-1 ml-1 scale-90"
         />
       </button>
     </div>
@@ -153,8 +156,9 @@ exports[`Storyshots app/pages/collectivite/Users/components/MembreListTableRow E
       data-test="fonction-dropdown"
     >
       <button
+        aria-expanded={false}
         aria-label="ouvrir le menu"
-        className="flex items-center w-full p-2 -ml-2 text-left text-sm"
+        className="flex items-center w-full p-2 text-left text-sm"
         onBlur={[Function]}
         onClick={[Function]}
         onFocus={[Function]}
@@ -164,12 +168,12 @@ exports[`Storyshots app/pages/collectivite/Users/components/MembreListTableRow E
         onPointerDown={[Function]}
       >
         <span
-          className="mr-auto"
+          className="mr-auto flex line-clamp-1"
         >
           Équipe technique
         </span>
         <span
-          className="fr-fi-arrow-down-s-line mt-1 ml-1 scale-90 "
+          className="fr-fi-arrow-down-s-line mt-1 ml-1 scale-90"
         />
       </button>
     </div>
@@ -181,8 +185,9 @@ exports[`Storyshots app/pages/collectivite/Users/components/MembreListTableRow E
       data-test="champ_intervention-dropdown"
     >
       <button
+        aria-expanded={false}
         aria-label="ouvrir le menu"
-        className="flex items-center w-full p-2 -ml-2 text-left text-sm"
+        className="flex items-center w-full p-2 text-left text-sm"
         onBlur={[Function]}
         onClick={[Function]}
         onFocus={[Function]}
@@ -192,17 +197,17 @@ exports[`Storyshots app/pages/collectivite/Users/components/MembreListTableRow E
         onPointerDown={[Function]}
       >
         <span
-          className="mr-auto flex flex-col"
+          className="mr-auto flex flex-col gap-2"
         >
-          <span>
+          <div>
             Climat Air Énergie
-          </span>
-          <span>
+          </div>
+          <div>
             Économie Circulaire
-          </span>
+          </div>
         </span>
         <span
-          className="fr-fi-arrow-down-s-line mt-1 ml-1 scale-90 "
+          className="fr-fi-arrow-down-s-line mt-1 ml-1 scale-90"
         />
       </button>
     </div>
@@ -229,8 +234,9 @@ exports[`Storyshots app/pages/collectivite/Users/components/MembreListTableRow E
       data-test="acces-dropdown"
     >
       <button
+        aria-expanded={false}
         aria-label="ouvrir le menu"
-        className="flex items-center w-full p-2 -ml-2 text-left text-sm"
+        className="flex items-center w-full p-2 text-left text-sm"
         onBlur={[Function]}
         onClick={[Function]}
         onFocus={[Function]}
@@ -245,7 +251,7 @@ exports[`Storyshots app/pages/collectivite/Users/components/MembreListTableRow E
           Édition
         </span>
         <span
-          className="fr-fi-arrow-down-s-line mt-1 ml-1 scale-90 "
+          className="fr-fi-arrow-down-s-line mt-1 ml-1 scale-90"
         />
       </button>
     </div>
@@ -325,8 +331,9 @@ exports[`Storyshots app/pages/collectivite/Users/components/MembreListTableRow L
       data-test="fonction-dropdown"
     >
       <button
+        aria-expanded={false}
         aria-label="ouvrir le menu"
-        className="flex items-center w-full p-2 -ml-2 text-left text-sm"
+        className="flex items-center w-full p-2 text-left text-sm"
         onBlur={[Function]}
         onClick={[Function]}
         onFocus={[Function]}
@@ -336,12 +343,12 @@ exports[`Storyshots app/pages/collectivite/Users/components/MembreListTableRow L
         onPointerDown={[Function]}
       >
         <span
-          className="mr-auto"
+          className="mr-auto flex line-clamp-1"
         >
           Équipe politique
         </span>
         <span
-          className="fr-fi-arrow-down-s-line mt-1 ml-1 scale-90 "
+          className="fr-fi-arrow-down-s-line mt-1 ml-1 scale-90"
         />
       </button>
     </div>
@@ -353,8 +360,9 @@ exports[`Storyshots app/pages/collectivite/Users/components/MembreListTableRow L
       data-test="champ_intervention-dropdown"
     >
       <button
+        aria-expanded={false}
         aria-label="ouvrir le menu"
-        className="flex items-center w-full p-2 -ml-2 text-left text-sm"
+        className="flex items-center w-full p-2 text-left text-sm"
         onBlur={[Function]}
         onClick={[Function]}
         onFocus={[Function]}
@@ -364,14 +372,14 @@ exports[`Storyshots app/pages/collectivite/Users/components/MembreListTableRow L
         onPointerDown={[Function]}
       >
         <span
-          className="mr-auto flex flex-col"
+          className="mr-auto flex flex-col gap-2"
         >
-          <span>
+          <div>
             Climat Air Énergie
-          </span>
+          </div>
         </span>
         <span
-          className="fr-fi-arrow-down-s-line mt-1 ml-1 scale-90 "
+          className="fr-fi-arrow-down-s-line mt-1 ml-1 scale-90"
         />
       </button>
     </div>
@@ -398,8 +406,9 @@ exports[`Storyshots app/pages/collectivite/Users/components/MembreListTableRow L
       data-test="acces-dropdown"
     >
       <button
+        aria-expanded={false}
         aria-label="ouvrir le menu"
-        className="flex items-center w-full p-2 -ml-2 text-left text-sm"
+        className="flex items-center w-full p-2 text-left text-sm"
         onBlur={[Function]}
         onClick={[Function]}
         onFocus={[Function]}
@@ -414,7 +423,7 @@ exports[`Storyshots app/pages/collectivite/Users/components/MembreListTableRow L
           Lecture
         </span>
         <span
-          className="fr-fi-arrow-down-s-line mt-1 ml-1 scale-90 "
+          className="fr-fi-arrow-down-s-line mt-1 ml-1 scale-90"
         />
       </button>
     </div>

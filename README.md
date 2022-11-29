@@ -1,9 +1,6 @@
 # Territoires en Transition
 
-Dans le cadre des programmes d'accompagnement des collectivités dans leurs démarches de transition écologique,
-l'[ADEME (l'Agence de la transition écologique)](https://www.ademe.fr/) s'est associée à
-[beta.gouv.fr](https://beta.gouv.fr/) pour lancer une plateforme numérique pour faciliter et accélérer la mise en oeuvre
-des actions de transition écologique dans les collectivités territoriales.
+Dans le cadre des programmes d'accompagnement des collectivités dans leurs démarches de transition écologique, l'[ADEME (l'Agence de la transition écologique)](https://www.ademe.fr/) s'est associée à [beta.gouv.fr](https://beta.gouv.fr/) pour lancer une plateforme numérique pour faciliter et accélérer la mise en œuvre des actions de transition écologique dans les collectivités territoriales.
 
 L'interface a pour objectifs de permettre aux utilisateurs :
 
@@ -43,18 +40,16 @@ Ces fichiers markdowns représentent des définitions auxquelles sont rattachée
 exemple un indicateur tel que [Emissions de GES](markdown/indicateurs/crte/crte_001.md)
 est destiné à permettre aux utilisateurs à saisir leurs données annuelles dans notre application.
 
-Ces définitions sont lues par la partie [referentiel](business/business/referentiel) du `business` et sauvegardée en
+Ces définitions sont lues par la partie [referentiel](business/business/referentiel/README.md) du `business` et sauvegardée en
 base afin d'être
 
-- utilisées pour le processus d'[évaluation](business/business/evaluation)
+- utilisées pour le processus d'[évaluation](./business/business/evaluation/README.md)
 - affichées dans le `client`
-- garantir la cohérence des données utilisateur stockées dans le `data layer` grace
-  au [schema](data_layer/postgres/definitions)
+- utilisées comme garantie de la cohérence des données utilisateur stockées dans le `data layer`
 
 ### Les données utilisateurs
 
-Les utilisateurs saisissent pour le compte de leur collectivité des données qui sont stockées dans le `data layer`
-qui vérifie leurs droits en écriture grace aux
+Les utilisateurs saisissent pour le compte de leur collectivité des données qui sont stockées dans le `data layer` qui vérifie leurs droits en écriture grace aux
 [row security policies](https://www.postgresql.˚org/docs/current/ddl-rowsecurity.html)
 
 ### Les données d'évaluation
@@ -81,10 +76,6 @@ Chacun de ses éléments a un périmètre définit :
 - le `business` se charge des parties métier et ne communique qu'avec le `data layer`
     - il lit les contenus markdown et les enregistre dans le `data layer`
     - il évalue les données utilisateur et les enregistre dans le `data layer`
-
-<div align="center">
-<img src="design.png" alt="architecture design" >
-</div>
 
 ## Stack
 
@@ -145,4 +136,4 @@ Néanmoins, on peut lancer les tests à partir de docker compose :
 
 ## Déploiement
 
-Aujourd'hui le `business` et le `client` sont déployés chez Scalingo, le `data layer` est chez supabase.io en mode SAAS.
+Aujourd'hui le `business` et le `client` sont déployés chez [Scalingo](https://scalingo.com/), le `data layer` est chez [Supabase](https://supabase.com/) en mode BaaS.

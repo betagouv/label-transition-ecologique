@@ -1,4 +1,6 @@
-import {ITEM_ALL, MultiSelectFilter} from 'ui/shared/MultiSelectFilter';
+import {ITEM_ALL} from 'ui/shared/select/commons';
+import {MultiSelectFilter} from 'ui/shared/select/MultiSelectFilter';
+import {MultiSelectFilterTitle} from 'ui/shared/select/MultiSelectFilterTitle';
 import {TFiltreProps} from './filters';
 
 export const PHASE = 'phase';
@@ -14,15 +16,16 @@ export const phaseItems = [
  * Affiche le filtre par phase
  */
 export const FiltrePhase = (props: TFiltreProps) => {
-  const {className, filters, setFilters} = props;
+  const {filters, setFilters} = props;
 
   return (
     <MultiSelectFilter
-      className={`filtre-phase ${className || ''}`}
-      label="Phase"
       values={filters[PHASE]}
-      items={phaseItems}
-      onChange={newValues => setFilters({...filters, [PHASE]: newValues})}
+      options={phaseItems}
+      onSelect={newValues => setFilters({...filters, [PHASE]: newValues})}
+      renderSelection={values => (
+        <MultiSelectFilterTitle values={values} label="Phase" />
+      )}
     />
   );
 };

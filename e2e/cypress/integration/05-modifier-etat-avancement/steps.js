@@ -37,7 +37,7 @@ When('tous les scores sont à 0', () => {
 
 When('les scores sont affichés avec les valeurs suivantes :', dataTable => {
   cy.wrap(dataTable.rows()).each(([action, score]) => {
-    cy.get(`[data-test="score-${action}"]`).should('have.text', score);
+    cy.get(`[data-test="score-${action}"]`).should('contain.text', score);
   });
 });
 
@@ -169,4 +169,24 @@ When(/l'historique est réinitialisé/, () => {
     query: 'TRUNCATE action_commentaire',
   });
   cy.task('supabase_rpc', {name: 'test_clear_history'});
+});
+
+When(
+  /je filtre l'historique avec le filtre "([^"]+)" par l'option "([^"]+)"/,
+  (filtre, option) => {
+    cy.get(`[data-test=filtre-${filtre}]`).click();
+    cy.root()
+      .get(`[data-test=filtre-${filtre}-options]`)
+      .contains(option)
+      .click();
+    cy.get(`[data-test=filtre-${filtre}]`).click();
+  }
+);
+
+When(/je filtre l'historique avec comme date de fin "([^"]+)"/, date => {
+  cy.get('[data-test=filtre-end-date]').type(date);
+});
+
+When('je désactive tous les filtres', () => {
+  cy.get('[data-test=desactiver-les-filtres]').click();
 });

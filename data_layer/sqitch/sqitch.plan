@@ -115,3 +115,32 @@ referentiel/action_discussion 2022-10-17T14:31:37Z Florian <florian@derfurth.com
 @v1.9.0 2022-11-04T10:35:32Z Florian <florian@derfurth.com> # Commentaires
 
 labellisation/audit 2022-10-21T14:59:44Z Amandine <contact@jacquelinamandine.fr> # Permettre à l'auditeur de marquer les actions audités
+collectivite/mes_collectivites_v2 [collectivite/mes_collectivites_v2@v1.9.0] 2022-11-08T09:20:51Z Amandine Jacquelin <conta@LanceLibre> # Ajout de la colonne est_auditeur dans la vue mes_collectivites
+utils/maintenance [utils/maintenance@v1.9.0] 2022-11-08T17:29:14Z Florian <florian@derfurth.com> # Ajoute la table maintenance à la publication realtime
+@v1.10.0 2022-11-09T14:11:36Z Florian <florian@derfurth.com> # Audit lot 1
+
+labellisation/suivi_audit 2022-11-10T15:17:25Z Florian <florian@derfurth.com> # La vue du suivi de l'audit
+@v1.11.0 2022-11-15T08:39:44Z Florian <florian@derfurth.com> # Audit lot 2
+
+referentiel/contenu_json 2022-10-21T11:49:29Z Florian <florian@derfurth.com> # Ingestion des contenus JSON générés par le business
+indicateur/contenu_json 2022-10-25T08:45:19Z Florian <florian@derfurth.com> # Ingestion des contenus JSON générés par le business
+evaluation/contenu_json 2022-10-25T15:57:21Z Florian <florian@derfurth.com> # Ingestion des contenus JSON générés par le business
+http_extension 2022-10-17T13:22:43Z Florian <florian@derfurth.com> # Installe l extension http
+evaluation/schema 2022-10-17T13:26:06Z Florian <florian@derfurth.com> # Le schéma pour le domaine évaluation
+evaluation/score_service [evaluation/schema] 2022-10-17T13:23:41Z Florian <florian@derfurth.com> # Utilise l'API REST du business
+evaluation/score_mise_a_jour [evaluation/score_service] 2022-11-02T08:43:32Z Florian <florian@derfurth.com> # Permet déterminer les collectivités dont les scores ne sont plus à jour
+cron/update_late_scores [evaluation/score_mise_a_jour] 2022-11-02T10:08:16Z Florian <florian@derfurth.com> # Met à jour les scores des collectivités toutes les 5 minutes
+evaluation/score_summary [evaluation/score_summary@v1.10.0] 2022-11-15T10:25:46Z Florian <florian@derfurth.com> # Met à jour la fonction de conversion du json.
+@v1.12.0 2022-11-17T14:56:31Z Florian <florian@derfurth.com> # Evaluation dans un service.
+
+retool/evaluation [retool/evaluation@v1.12.0] 2022-11-17T16:43:20Z Florian <florian@derfurth.com> # Améliore la vue retool pour les exports d'audit.
+@v1.13.0 2022-11-18T15:00:47Z Florian <florian@derfurth.com> # Nouvelles vues retool pour export audit.
+
+stats/schema 2022-11-28T08:45:41Z Florian <florian@derfurth.com> # Ajoute le schéma stats
+stats/collectivite [stats/collectivite@v1.13.0 stats/schema] 2022-11-28T10:42:31Z Florian <florian@derfurth.com> # Répare les stats pour les collectivités actives.
+stats/utilisateur [stats/utilisateur@v1.13.0 stats/collectivite] 2022-11-28T13:27:47Z Florian <florian@derfurth.com> # Les stats des utilisateurs uniques
+@v1.14.0 2022-11-29T08:31:36Z Florian <florian@derfurth.com> # Répare les vues stats.
+
+retool/evaluation [retool/evaluation@v1.13.0] 2022-11-24T14:56:45Z Florian <florian@derfurth.com> # Répare la fusion des commentaires
+migration_schema 2022-11-24T16:47:43Z Amandine Jacquelin <conta@LanceLibre> # Schema de migration pour transferer les donnees dans un rework
+labellisation/audit [labellisation/audit@v1.13.0 migration_schema] 2022-11-24T13:16:45Z Amandine Jacquelin <conta@LanceLibre> # Il peut y avoir plusieurs auditeurs

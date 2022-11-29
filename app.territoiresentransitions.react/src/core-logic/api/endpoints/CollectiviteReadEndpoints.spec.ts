@@ -15,7 +15,7 @@ import {
 
 describe('All Collectivite reading endpoint should retrieve 1628 Collectivites', () => {
   it('should retrieve all Collectivites sorted by nom if no arguments are given (for any connected user)', async () => {
-    await supabaseClient.auth.signIn(yuluCredentials); // Yulu has no rights on collectivite #1
+    await supabaseClient.auth.signInWithPassword(yuluCredentials); // Yulu has no rights on collectivite #1
 
     const results = await allCollectiviteReadEndpoint.getBy({}); // all
 
@@ -26,23 +26,25 @@ describe('All Collectivite reading endpoint should retrieve 1628 Collectivites',
 
 describe('Owned Collectivite reading endpoint', () => {
   it('should retrieve 2 Collectivites for Yolo (referent and agent)', async () => {
-    await supabaseClient.auth.signIn(yoloCredentials);
+    await supabaseClient.auth.signInWithPassword(yoloCredentials);
     const results = await ownedCollectiviteReadEndpoint.getBy({});
     const expectedResults: MesCollectivitesRead[] = [
       {
         ...collectivite1,
         niveau_acces: 'admin',
+        est_auditeur: false,
       },
       {
         ...collectivite2,
         niveau_acces: 'edition',
+        est_auditeur: false,
       },
     ];
     expect(results.length).toEqual(2);
     expect(results).toEqual(expectedResults);
   });
   it('should retrieve 0 Collectivite for Yulu', async () => {
-    await supabaseClient.auth.signIn(yuluCredentials);
+    await supabaseClient.auth.signInWithPassword(yuluCredentials);
     const results = await ownedCollectiviteReadEndpoint.getBy({});
     expect(results).toEqual([]);
   });

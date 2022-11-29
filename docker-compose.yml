@@ -194,6 +194,7 @@ services:
       - sqitch
       - kong
       - rest
+      - business
     command: sh /scripts/try_load.sh
     environment:
       SKIP_TEST_DOMAIN: ${LOADER_SKIP_TEST_DOMAIN}
@@ -255,65 +256,31 @@ services:
   business:
     container_name: tet-business
     build: ./business/.
+    ports: # expose le port pour tester de l'extérieur.
+      - "8888:8888"
     depends_on:
-      loader:
-        condition: service_completed_successfully
-      realtime:
-        condition: service_started
+      - kong
     restart: unless-stopped
     command: >
-      bash -c "pipenv run python -u business/evaluation/entrypoints/start_realtime.py"
+      bash -c "uvicorn evaluation_api:app --host 0.0.0.0 --port 8888"
     environment:
-      SUPABASE_URL: ${SUPABASE_URL}
-      SUPABASE_WS: ${SUPABASE_WS}
-      REPOSITORIES: SUPABASE
-
-  business-update-content:
-    container_name: tet-business-update-content
-    build: ./business/.
-    profiles:
-      - donotstart
-    depends_on:
-      loader:
-        condition: service_completed_successfully
-    restart: unless-stopped
-    command: >
-      bash -c "pipenv run python business/referentiel/entrypoints/cli.py update-referentiels --referentiel eci
-      && pipenv run python business/referentiel/entrypoints/cli.py update-referentiels --referentiel cae
-      && pipenv run python business/referentiel/entrypoints/cli.py update-referentiels --referentiel crte
-      && pipenv run python business/referentiel/entrypoints/cli.py update-questions-and-personnalisations"
-    environment:
-      SUPABASE_URL: ${SUPABASE_URL}
-      SUPABASE_WS: ${SUPABASE_WS}
-      REPOSITORIES: SUPABASE
-      REFERENTIELS_REPOSITORY: SUPABASE
-    volumes:
-      - ./markdown:/markdown
+      SUPABASE_URL: http://kong:8000
+      SUPABASE_KEY: ${SERVICE_ROLE_KEY}
 
   business-test:
     container_name: tet-business-test
     build: ./business/.
     profiles:
       - donotstart
-    depends_on:
-      loader:
-        condition: service_completed_successfully
-      realtime:
-        condition: service_started
     command: >
-      bash -c "pipenv run pytest tests"
-    environment:
-      SUPABASE_URL: ${SUPABASE_URL}
-      SUPABASE_WS: ${SUPABASE_WS}
-      REPOSITORIES: SUPABASE
+      bash -c "pytest tests"
 
-  business-parse-preuves:
-    container_name: tet-business-parse-preuves
+  business-parse-content:
+    container_name: tet-business-parse-content
     build: ./business/.
     profiles:
       - donotstart
-    command: >
-      bash -c "pipenv run python business/referentiel/cli.py parse-preuves --input-markdown-folder ../markdown/preuves --output-json-file ../data_layer/content/preuves.json"
+    command: sh ./referentiel_parse_all.sh
     volumes:
       - ./markdown:/markdown
       - ./data_layer/content:/data_layer/content
@@ -322,15 +289,12 @@ services:
     container_name: tet-client
     build: ./app.territoiresentransitions.react/.
     depends_on:
-      - kong
-      - auth
-      - rest
-      - realtime
-      - business
+      loader:
+        condition: service_completed_successfully
+      business:
+        condition: service_started
     ports:
       - ${CLIENT_PORT}:3000
-    command: >
-      bash -c "npm run build && npm run start"
     environment:
       REACT_APP_SUPABASE_KEY: ${ANON_KEY}
       REACT_APP_SUPABASE_URL: http://localhost:8000
@@ -344,11 +308,10 @@ services:
     profiles:
       - donotstart
     depends_on:
-      - kong
-      - auth
-      - rest
-      - realtime
-      - business
+      loader:
+        condition: service_completed_successfully
+      business:
+        condition: service_started
     ports:
       - ${CLIENT_PORT}:3000
     command: >
@@ -372,7 +335,7 @@ services:
       SQITCH_TARGET: db:pg://db/postgres
       SQITCH_PASSWORD: ${POSTGRES_PASSWORD}
       SQITCH_USERNAME: postgres
-    command: revert --to @v1.9.0 --y
+    command: revert --to @v1.12.0 --y
     working_dir: /data_layer/sqitch
     volumes:
       - ./data_layer/sqitch:/data_layer/sqitch

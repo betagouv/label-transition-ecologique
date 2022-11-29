@@ -2,15 +2,16 @@ import {useCallback, useMemo} from 'react';
 import {useQuery} from 'react-query';
 import {supabaseClient} from 'core-logic/api/supabase';
 import {IActionStatutsRead} from 'generated/dataLayer/action_statuts_read';
+import {useToggleRowExpandedReducer} from './useToggleRowExpandedReducer';
 
 // les informations du référentiel à précharger
 export type ActionReferentiel = Pick<
   IActionStatutsRead,
-  'action_id' | 'identifiant' | 'nom' | 'depth' | 'have_children'
+  'action_id' | 'identifiant' | 'nom' | 'depth' | 'have_children' | 'type'
 >;
 
-type IAction = Pick<IActionStatutsRead, 'action_id'>;
-type TActionsSubset<ActionSubset> = (ActionSubset & ActionReferentiel)[];
+export type IAction = Pick<IActionStatutsRead, 'action_id'>;
+export type TActionsSubset<ActionSubset> = (ActionSubset & ActionReferentiel)[];
 
 /**
  * Agrège les lignes fournies avec l'arborescence du référentiel
@@ -59,6 +60,12 @@ export const useReferentiel = <ActionSubset extends IAction>(
   // calcule le nombre de tâches après filtrage
   const count = useMemo(() => rows?.filter(isTache).length || 0, [rows]);
 
+  // le `stateReducer` de react-table permet de transformer le prochain état de
+  // la table avant qu'il ne soit appliqué lors du traitement d'une action
+  // utilisé ici pour personnaliser le comportement de l'action `toggleRowExpanded`
+  const reducer = useToggleRowExpandedReducer(rows);
+  const stateReducer = useCallback(reducer, [rows]);
+
   return {
     isLoading,
     total,
@@ -68,6 +75,7 @@ export const useReferentiel = <ActionSubset extends IAction>(
       getRowId,
       getSubRows,
       autoResetExpanded: false,
+      stateReducer,
     },
   };
 };
@@ -140,8 +148,8 @@ const fetchActionsReferentiel = async (
 ): Promise<ActionReferentiel[]> => {
   // la requête
   const query = supabaseClient
-    .from<IActionStatutsRead>('action_statuts')
-    .select('action_id,identifiant,have_children,nom,depth')
+    .from('action_statuts')
+    .select('action_id,identifiant,have_children,nom,depth,type')
     .match({referentiel, collectivite_id})
     .gt('depth', 0);
 

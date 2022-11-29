@@ -3,8 +3,9 @@ import {toFixed} from 'utils/toFixed';
 import {ActionScore} from 'types/ClientScore';
 import {actionAvancementColors} from 'app/theme';
 import {useActionScore} from 'core-logic/hooks/scoreHooks';
+import {TweenText} from 'ui/shared/TweenText';
 
-export const ActionProgressBar = ({score}: {score: ActionScore | null}) => {
+export const ActionProgressBar = ({score}: { score: ActionScore | null }) => {
   if (score === null) return null;
 
   return (
@@ -22,7 +23,7 @@ export const ActionProgressBar = ({score}: {score: ActionScore | null}) => {
   );
 };
 
-const ColoredBar = ({score}: {score: ActionScore}) => {
+const ColoredBar = ({score}: { score: ActionScore }) => {
   if (score.point_potentiel < 1e-3) return null;
   const percentageAgainstPotentiel = (x: number): number =>
     (100 * x) / score.point_potentiel;
@@ -33,9 +34,12 @@ const ColoredBar = ({score}: {score: ActionScore}) => {
     percentageAgainstPotentiel(score.point_pas_fait) + programme_width;
 
   const _barStyle = {borderRadius: 4};
+  const animationClasses = 'transition-width duration-500 ease-in-out';
   return (
     <div className="flex gap-3 items-center justify-end">
-      <div className="text-sm font-bold">{toFixed(fait_width)} %</div>
+      <div className="text-sm font-bold">
+        <TweenText text={`${toFixed(fait_width)} %`} align-right />
+      </div>
       <div className="flex pt-1">
         <div
           style={{
@@ -45,6 +49,7 @@ const ColoredBar = ({score}: {score: ActionScore}) => {
             position: 'relative',
             ..._barStyle,
           }}
+          className={animationClasses}
         >
           <div
             style={{
@@ -56,6 +61,7 @@ const ColoredBar = ({score}: {score: ActionScore}) => {
               left: 0,
               ..._barStyle,
             }}
+            className={animationClasses}
           />
           <div
             style={{
@@ -67,6 +73,7 @@ const ColoredBar = ({score}: {score: ActionScore}) => {
               left: 0,
               ..._barStyle,
             }}
+            className={animationClasses}
           />
           <div
             style={{
@@ -78,6 +85,7 @@ const ColoredBar = ({score}: {score: ActionScore}) => {
               left: 0,
               ..._barStyle,
             }}
+            className={animationClasses}
           />
         </div>
       </div>
@@ -86,16 +94,16 @@ const ColoredBar = ({score}: {score: ActionScore}) => {
 };
 const formatAvancementScore = (
   avancementPoint: number,
-  maxPoint: number
+  maxPoint: number,
 ): string => {
   return `${maxPoint ? toFixed((avancementPoint / maxPoint) * 100) : 0}%`;
 };
 
 const ProgressBarTooltipAvancementContent = ({
-  prefix,
-  avancementPoint,
-  potentielPoint,
-}: {
+                                               prefix,
+                                               avancementPoint,
+                                               potentielPoint,
+                                             }: {
   prefix: string;
   avancementPoint: number;
   potentielPoint: number;
@@ -106,7 +114,7 @@ const ProgressBarTooltipAvancementContent = ({
     </div>
   ) : null;
 
-const ProgressBarTooltipContent = ({score}: {score: ActionScore}) => {
+const ProgressBarTooltipContent = ({score}: { score: ActionScore }) => {
   return (
     <div className="text-base">
       <ProgressBarTooltipAvancementContent
@@ -134,7 +142,7 @@ const ProgressBarTooltipContent = ({score}: {score: ActionScore}) => {
   );
 };
 
-const ActionProgressBarConnected = ({actionId}: {actionId: string}) => {
+const ActionProgressBarConnected = ({actionId}: { actionId: string }) => {
   const score = useActionScore(actionId);
   return <ActionProgressBar score={score} />;
 };

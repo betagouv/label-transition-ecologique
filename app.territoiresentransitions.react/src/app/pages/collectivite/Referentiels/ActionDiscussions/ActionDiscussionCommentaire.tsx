@@ -59,13 +59,13 @@ const ActionDiscussionCommentaire = ({commentaire, discussion}: Props) => {
         <div className="text-sm whitespace-pre-wrap">{commentaire.message}</div>
       </div>
       <div className="flex items-center">
-        {user && user.id === discussion?.created_by && (
+        {discussion && (
           <div className="shrink-0 mr-1 border border-gray-200">
             <button
               onClick={() =>
                 handleUpdateDiscussionStatus(discussion.id, discussion.status)
               }
-              className="py-1 px-2 text-sm hover:bg-gray-100"
+              className="py-1 px-2 text-sm text-bf500 hover:bg-gray-100"
             >
               {discussion.status === 'ouvert' && 'Fermer'}
               {discussion.status === 'ferme' && 'Rouvrir'}

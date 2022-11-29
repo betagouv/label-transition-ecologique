@@ -2,9 +2,9 @@ import {supabaseClient} from 'core-logic/api/supabase';
 import {IActionStatutsRead} from 'generated/dataLayer/action_statuts_read';
 import {ActionReferentiel} from 'app/pages/collectivite/ReferentielTable/useReferentiel';
 import {boundariesToQueryFilter} from 'ui/shared/boundariesToQueryFilter';
-import {ITEM_ALL} from 'ui/shared/MultiSelectFilter';
 import {filterToBoundaries, TFilters} from './filters';
 import {percentBoundaries} from './FiltrePourcentage';
+import {ITEM_ALL} from 'ui/shared/select/commons';
 
 // un sous-ensemble des champs pour alimenter notre table
 export type PriorisationRow = ActionReferentiel &
@@ -30,7 +30,7 @@ export const fetchRows = async (
 
   // la requête
   const query = supabaseClient
-    .from<IActionStatutsRead>('action_statuts')
+    .from('action_statuts')
     .select('action_id,phase,score_realise,score_programme,points_restants')
     .match({collectivite_id, referentiel})
     .gt('depth', 0);

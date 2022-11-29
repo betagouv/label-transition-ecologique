@@ -1,4 +1,6 @@
-import {ITEM_ALL, MultiSelectFilter} from 'ui/shared/MultiSelectFilter';
+import {ITEM_ALL} from 'ui/shared/select/commons';
+import {MultiSelectFilter} from 'ui/shared/select/MultiSelectFilter';
+import {MultiSelectFilterTitle} from 'ui/shared/select/MultiSelectFilterTitle';
 import {TFilters, TFiltreProps, TValueToBoundary} from './filters';
 
 export const SCORE_REALISE = 'score_realise';
@@ -21,15 +23,16 @@ export const percentBoundaries: TValueToBoundary = {
 
 export const makeFiltrePourcentage =
   (filterKey: string, label: string) => (props: TFiltreProps) => {
-    const {className, filters, setFilters} = props;
+    const {filters, setFilters} = props;
 
     return (
       <MultiSelectFilter
-        className={`${filterKey} ${className || ''}`}
-        label={label}
         values={filters[filterKey as keyof TFilters]}
-        items={percentItems}
-        onChange={newValues => setFilters({...filters, [filterKey]: newValues})}
+        options={percentItems}
+        onSelect={newValues => setFilters({...filters, [filterKey]: newValues})}
+        renderSelection={values => (
+          <MultiSelectFilterTitle values={values} label={label} />
+        )}
       />
     );
   };

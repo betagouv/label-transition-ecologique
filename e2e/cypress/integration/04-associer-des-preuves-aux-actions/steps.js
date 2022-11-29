@@ -121,10 +121,15 @@ When(
 When(
   /je saisi "([^"]+)" comme commentaire de la preuve "([^"]+)" de l'action "([^"]+)"/,
   (commentaire, preuve, action) => {
-    getPreuvePanel(action)
-      .find(`[data-test^=preuves] input`)
-      .clear()
-      .type(commentaire + '{enter}');
+    getPreuvePanel(action).within(() => {
+      // efface le contenu du champ commentaire
+      const inputSelector = '[data-test^=preuves] input';
+      cy.get(inputSelector).clear();
+      // saisi une nouvelle valeur + ENTREE
+      cy.get(inputSelector).type(commentaire + '{enter}');
+      // le champ doit avoir disparu (le nouveau commentaire est en lecture seule)
+      cy.get(inputSelector).should('not.exist');
+    });
   }
 );
 

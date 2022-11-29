@@ -6,13 +6,14 @@ import {
   useMemo,
   useState,
 } from 'react';
-import {User, UserCredentials} from '@supabase/supabase-js';
+import {User, SignInWithPasswordCredentials} from '@supabase/supabase-js';
 import {useQuery} from 'react-query';
 import {supabaseClient} from '../supabase';
+import {useCurrentSession} from './useCurrentSession';
 
 // typage du contexte exposé par le fournisseur
 export type TAuthContext = {
-  connect: (data: UserCredentials) => Promise<boolean>;
+  connect: (data: SignInWithPasswordCredentials) => Promise<boolean>;
   disconnect: () => Promise<boolean>;
   user: UserData | null;
   authError: string | null;
@@ -30,7 +31,7 @@ export const useAuth = () => useContext(AuthContext) as TAuthContext;
 // le fournisseur de contexte
 export const AuthProvider = ({children}: {children: ReactNode}) => {
   // restaure une éventuelle session précédente
-  const session = supabaseClient.auth.session();
+  const session = useCurrentSession();
   const [user, setUser] = useState<User | null>(session?.user ?? null);
 
   // pour stocker la dernière erreur d'authentification
@@ -46,17 +47,17 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
   // initialisation : enregistre l'écouteur de changements d'état
   useEffect(() => {
     // écoute les changements d'état (connecté, déconnecté, etc.)
-    const {data: listener} = supabaseClient.auth.onAuthStateChange(
-      async (event, updatedSession) => {
-        setUser(updatedSession?.user ?? null);
-        if (updatedSession?.user) {
-          setAuthError(null);
-        }
+    const {
+      data: {subscription},
+    } = supabaseClient.auth.onAuthStateChange(async (event, updatedSession) => {
+      setUser(updatedSession?.user ?? null);
+      if (updatedSession?.user) {
+        setAuthError(null);
       }
-    );
+    });
 
     return () => {
-      listener?.unsubscribe();
+      subscription?.unsubscribe();
     };
   }, []);
 
@@ -70,11 +71,11 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
   }, [userData]);
 
   // pour authentifier l'utilisateur
-  const connect = (data: UserCredentials) =>
+  const connect = (data: SignInWithPasswordCredentials) =>
     supabaseClient.auth
-      .signIn(data)
-      .then(session => {
-        if (!session.user) {
+      .signInWithPassword(data)
+      .then(({data}) => {
+        if (!data.user) {
           setAuthError("L'email et le mot de passe ne correspondent pas.");
           return false;
         }
@@ -101,11 +102,18 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
+declare global {
+  interface Window {
+    $crisp: {
+      push: (args: [action: string, method: string, value?: string[]]) => void;
+    };
+  }
+}
+
 // affecte les données de l'utilisateur connecté à la chatbox
 const setCrispUserData = (userData: UserData | null) => {
   if ('$crisp' in window && userData) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const {$crisp} = window as any;
+    const {$crisp} = window;
     const {nom, prenom, email} = userData;
 
     if (nom && prenom) {
@@ -113,15 +121,16 @@ const setCrispUserData = (userData: UserData | null) => {
     }
 
     // enregistre l'email
-    $crisp.push(['set', 'user:email', [email]]);
+    if (email) {
+      $crisp.push(['set', 'user:email', [email]]);
+    }
   }
 };
 
 // ré-initialise les données de la chatbox (appelée à la déconnexion)
 const clearCrispUserData = () => {
   if ('$crisp' in window) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const {$crisp} = window as any;
+    const {$crisp} = window;
     $crisp.push(['do', 'session:reset']);
   }
 };

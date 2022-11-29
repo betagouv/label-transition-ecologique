@@ -1,6 +1,7 @@
+import SelectDropdown from 'ui/shared/select/SelectDropdown';
+import {BadgeAuditStatut} from './BadgeAuditStatut';
+
 import {ActionDefinitionSummary} from 'core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
-import {Badge, TBadgeProps} from 'ui/shared/Badge';
-import {SelectDropdownCustom} from 'ui/shared/SelectDropdown';
 import {TActionAuditStatut, TAuditStatut} from './types';
 import {useActionAuditStatut} from './useActionAuditStatut';
 import {useAudit, useIsAuditeur} from './useAudit';
@@ -16,17 +17,11 @@ export type TActionAuditStatutBaseProps = {
   onChange: (newStatut: TAuditStatut) => void;
 };
 
-const statutToOption: Record<
-  TAuditStatut,
-  {label: string; badge: TBadgeProps['status']}
-> = {
-  non_audite: {label: 'Non audité', badge: 'warning'},
-  en_cours: {label: 'Audit en cours', badge: 'info'},
-  audite: {label: 'Audité', badge: 'success'},
-};
-
-const options: TAuditStatut[] = ['non_audite', 'en_cours', 'audite'];
-
+const options: {value: TAuditStatut; label: string}[] = [
+  {value: 'non_audite', label: 'Non audité'},
+  {value: 'en_cours', label: 'Audit en cours'},
+  {value: 'audite', label: 'Audité'},
+];
 /**
  * Affiche le sélecteur de statut d'audit d'une action
  */
@@ -37,32 +32,26 @@ export const ActionAuditStatutBase = (props: TActionAuditStatutBaseProps) => {
     <div className="px-2 w-full bg-[#e8edff]">
       {readonly ? (
         <div className="py-2" data-test="action-audit-statut-ro">
-          <BadgeStatut statut={statut} />
+          <BadgeAuditStatut statut={statut} />
         </div>
       ) : (
         <div className="w-52">
-          <SelectDropdownCustom
+          <SelectDropdown
             data-test="action-audit-statut"
-            options={options}
-            displayOption={statut => <BadgeStatut statut={statut} />}
             value={statut}
+            options={options}
             onSelect={onChange}
+            renderOption={statut => <BadgeAuditStatut statut={statut} />}
+            renderSelection={statut => (
+              <span className="mr-auto">
+                <BadgeAuditStatut statut={statut} />
+              </span>
+            )}
+            buttonClassName="w-full"
           />
         </div>
       )}
     </div>
-  );
-};
-
-/**
- * Affiche un badge représentant un statut d'audit
- */
-const BadgeStatut = ({statut}: {statut: TAuditStatut}) => {
-  const {label, badge} = statutToOption[statut];
-  return (
-    <Badge status={badge} className="fr-badge--no-icon">
-      {label}
-    </Badge>
   );
 };
 

@@ -1,6 +1,6 @@
 import {ActionAvancement} from 'generated/dataLayer/action_statut_read';
 import {QuestionType} from 'generated/dataLayer/question_read';
-import {TFilters} from './filters';
+import {TFilters, TInitialFilters} from './filters';
 
 /* Types des données reçu par le data layer */
 export type HistoriqueType =
@@ -20,7 +20,7 @@ export type THistoriqueItem = {
   modified_by_id: string;
   modified_by_nom: string;
   modified_at: string;
-  previous_modified_by: string | null;
+  previous_modified_by_id: string | null;
   previous_modified_at: string | null;
 
   /** modif. d'un statut d'action ou d'une précision */
@@ -60,6 +60,7 @@ export type THistoriqueItemProps = {
 export type THistoriqueProps = {
   items: THistoriqueItem[];
   total: number;
+  initialFilters: TInitialFilters;
   filters: TFilters;
   filtersCount: number;
   setFilters: (filters: TFilters) => void;

@@ -10,10 +10,9 @@ import type {
 export class ReponseWriteEndpoint extends ChangeNotifier {
   async save(qr: TQuestionReponseWrite): Promise<boolean> {
     const newReponse = transform(qr);
-    const ret = await supabaseClient.rpc('save_reponse', newReponse);
+    const ret = await supabaseClient.rpc('save_reponse', newReponse as any);
     if (ret?.error) {
-      console.error(ret?.error);
-      return false;
+      throw ret?.error;
     }
     this.notifyListeners();
     return true;

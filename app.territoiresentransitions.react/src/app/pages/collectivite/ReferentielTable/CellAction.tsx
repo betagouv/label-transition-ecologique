@@ -2,6 +2,8 @@ import {CellProps} from 'react-table';
 import {Link} from 'react-router-dom';
 import {makeCollectiviteTacheUrl, ReferentielParamOption} from 'app/paths';
 import {ActionReferentiel} from './useReferentiel';
+import {Tooltip} from 'ui/shared/floating-ui/Tooltip';
+import {Kbd} from 'ui/shared/Kbd';
 
 export type TCellProps = CellProps<ActionReferentiel> & {
   collectiviteId: number | null;
@@ -63,6 +65,10 @@ export const CellAction = (props: TCellProps) => {
   const pillDepths = referentielId === 'cae' ? [3, 4] : [2, 3];
   const idDepth = referentielId === 'cae' ? 2 : 1;
 
+  if (!collectiviteId) {
+    return null;
+  }
+
   return (
     <>
       {depth > idDepth ? (
@@ -99,6 +105,24 @@ export const CellAction = (props: TCellProps) => {
   );
 };
 
+// infobulles
+const infoReplier = () => (
+  <p>
+    Cliquer pour replier (tenir <Kbd>⇧ SHIFT</Kbd> enfoncé
+    <br />
+    pour replier toutes les lignes de même niveau)
+  </p>
+);
+const infoDeplier = () => (
+  <p>
+    Cliquer pour déplier (tenir <Kbd>⇧ SHIFT</Kbd> enfoncé pour déplier
+    <br />
+    toutes les lignes de même niveau de l'axe, ou tenir
+    <br />
+    <Kbd>⌥ ALT</Kbd> enfoncé pour déplier aussi tous les axes)
+  </p>
+);
+
 // affiche le picto reflétant l'état plié/déplié
 const Expand = ({row, referentielId}: TCellProps) => {
   const {isExpanded, original} = row;
@@ -109,11 +133,17 @@ const Expand = ({row, referentielId}: TCellProps) => {
     isExpanded ? 'arrow-down' : 'arrow-right',
     invertColor ? 'before:bg-white' : 'before:bg-black',
   ].join(' ');
+
+  const label = isExpanded ? infoReplier : infoDeplier;
   return (
-    <button
-      className={className}
-      {...row.getToggleRowExpandedProps()}
-      title={isExpanded ? 'Replier' : 'Déplier'}
-    />
+    <Tooltip label={label}>
+      <button
+        data-test={`btn-${isExpanded ? 'collapse' : 'expand'}`}
+        className={className}
+        {...row.getToggleRowExpandedProps()}
+        onMouseOver={undefined}
+        title=""
+      />
+    </Tooltip>
   );
 };

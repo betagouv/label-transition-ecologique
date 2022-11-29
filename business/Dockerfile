@@ -2,13 +2,13 @@
 
 FROM python:3.9
 
-RUN mkdir -p /business
 WORKDIR /business
 
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
 COPY . .
-RUN pip install pipenv
-RUN pipenv install
-RUN pipenv install -e .
+RUN pip install -e .
+EXPOSE 8888
 
-CMD ["pipenv", "run", "python", "-u", "business/evaluation/entrypoints/start_realtime.py"]
-
+CMD ["uvicorn", "evaluation_api:app", "--host", "0.0.0.0", "--port", "8888"]

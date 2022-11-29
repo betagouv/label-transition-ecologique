@@ -1,7 +1,6 @@
 import {Link} from 'react-router-dom';
 import {useCollectiviteId, useReferentielId} from 'core-logic/hooks/params';
 import {referentielToName} from 'app/labels';
-import {CriteresLabellisation} from './CriteresLabellisation';
 import {usePreuves} from 'ui/shared/preuves/Bibliotheque/usePreuves';
 import {useParcoursLabellisation} from './useParcoursLabellisation';
 import {Header} from './Header';
@@ -11,6 +10,8 @@ import {
   ReferentielParamOption,
 } from 'app/paths';
 import {TPreuveLabellisation} from 'ui/shared/preuves/Bibliotheque/types';
+import {LabellisationTabs} from './LabellisationTabs';
+import {CriteresLabellisation} from './CriteresLabellisation';
 
 const ParcoursLabellisation = () => {
   const collectiviteId = useCollectiviteId();
@@ -24,15 +25,7 @@ const ParcoursLabellisation = () => {
   if (!parcours) {
     return (
       <>
-        <h1 className="text-center fr-mt-4w fr-mb-1w">
-          Parcours de labellisation
-        </h1>
-        {referentiel ? (
-          <p className="text-center text-[22px]">
-            Référentiel{' '}
-            {referentielToName[referentiel as ReferentielOfIndicateur]}
-          </p>
-        ) : null}
+        <Title referentiel={referentiel} />
         <main className="fr-container mt-9 mb-16">
           <p>
             Ce référentiel n’est pas encore renseigné pour votre collectivité.
@@ -60,23 +53,20 @@ const ParcoursLabellisation = () => {
 
   return collectiviteId && parcours ? (
     <>
-      <h1 className="text-center fr-mt-4w fr-mb-1w">
-        Parcours de labellisation
-      </h1>
-      <p className="text-center text-[22px]">
-        Référentiel {referentielToName[parcours.referentiel]}
-      </p>
+      <Title referentiel={parcours.referentiel} />
       <Header parcours={parcours} demande={demande} preuves={preuves} />
       <main
         className="fr-container mt-9 mb-16"
         data-test={`labellisation-${parcours.referentiel}`}
       >
-        <CriteresLabellisation
-          collectiviteId={collectiviteId}
-          parcours={parcours}
-          demande={demande}
-          preuves={preuves}
-        />
+        <LabellisationTabs>
+          <CriteresLabellisation
+            collectiviteId={collectiviteId}
+            parcours={parcours}
+            demande={demande}
+            preuves={preuves}
+          />
+        </LabellisationTabs>
         {/*parcours.referentiel === 'cae' ? (
           <>
             <h2 className="fr-mt-4w">Calendrier de labellisation</h2>
@@ -89,5 +79,16 @@ const ParcoursLabellisation = () => {
     <div>...</div>
   );
 };
+
+const Title = ({referentiel}: {referentiel: string | null}) => (
+  <>
+    <h1 className="text-center fr-mt-4w fr-mb-1w">Audit et labellisation</h1>
+    {referentiel ? (
+      <p className="text-center text-[22px]">
+        Référentiel {referentielToName[referentiel as ReferentielOfIndicateur]}
+      </p>
+    ) : null}
+  </>
+);
 
 export default ParcoursLabellisation;
