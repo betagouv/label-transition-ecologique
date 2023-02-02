@@ -21,6 +21,35 @@ identite(population, moins_de_50000)
 ```
 Les collectivités de moins de 50 000 habitants ne sont pas concernées par l'obligation BEGES.
 
+# Desactivation cae 1.1.2.1.5 liee EPCI
+```yaml
+action_id: cae_1.1.2.1.5
+```
+## Règles
+### Désactivation
+```formule
+identite(type, EPCI)
+```
+
+# Personnalisation cae 1.1.3.1.4 liee competence collecte
+```yaml
+action_id: cae_1.1.3.1.4
+```
+## Règles
+### Désactivation
+```formule
+reponse(dechets_1, NON)
+```
+
+# Personnalisation cae 1.1.3.1.5 liee competence traitement
+```yaml
+action_id: cae_1.1.3.1.5
+```
+## Règles
+### Désactivation
+```formule
+reponse(dechets_2, NON)
+```
 
 # Réduction potentiel cae 1.2.2 liee AOM
 ```yaml
