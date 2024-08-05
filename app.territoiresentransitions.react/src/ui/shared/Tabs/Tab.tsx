@@ -18,7 +18,7 @@ interface TabProps {
 }
 
 const Tab = ({
-  className,
+  className = '',
   index,
   activeTab,
   children,
@@ -39,10 +39,5 @@ const Tab = ({
     {index === activeTab ? children : null}
   </div>
 );
-
-Tab.defaultProps = {
-  className: '',
-  icon: '',
-};
 
 export default Tab;

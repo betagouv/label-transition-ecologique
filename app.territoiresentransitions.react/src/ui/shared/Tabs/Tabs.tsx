@@ -22,9 +22,9 @@ type TabsProps = {
  * @visibleName Tabs
  */
 const Tabs = ({
-  className,
+  className = '',
   children,
-  defaultActiveTab,
+  defaultActiveTab = 0,
   onChange,
   ...remainingProps
 }: TabsProps) => {
@@ -109,12 +109,6 @@ const Tabs = ({
       {tabsPanel}
     </div>
   );
-};
-
-Tabs.defaultProps = {
-  className: '',
-  defaultActiveTab: 0,
-  onChange: undefined,
 };
 
 export default Tabs;
