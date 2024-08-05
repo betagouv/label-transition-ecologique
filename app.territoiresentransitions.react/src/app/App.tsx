@@ -7,7 +7,7 @@ import {
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {ReactQueryDevtools} from 'react-query/devtools';
 import {TrackingProvider, createTrackingClient} from '@tet/ui';
-import {ENV} from 'environmentVariables';
+import {ENV} from '@tet/app/environmentVariables';
 import {E2E} from './E2E';
 import {CollectiviteRoutes} from 'app/pages/collectivite/CollectiviteRoutes';
 import Home from 'app/pages/Home';
@@ -16,10 +16,15 @@ import {Toasters} from 'app/Toasters';
 import {ScrollToTopOnPageChange} from 'app/ScrollToTopOnPageChange';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 
-import {ancienRecherchesPath, profilPath, recherchesCollectivitesUrl, recherchesLandingPath} from 'app/paths';
+import {
+  ancienRecherchesPath,
+  profilPath,
+  recherchesCollectivitesUrl,
+  recherchesLandingPath,
+} from 'app/paths';
 import {CollectivitesEngageesPage} from 'app/pages/CollectivitesEngagees/CollectivitesEngageesPage';
 import {ProfilPage} from './pages/Profil/ProfilPage';
-import Layout from 'app/Layout';
+
 import {AuthProvider} from 'core-logic/api/auth/AuthProvider';
 import {ScoreListenerProvider} from 'core-logic/hooks/useScoreListener';
 import {VisitTracker} from 'app/VisitTracker';
@@ -39,13 +44,12 @@ const trackingClient = createTrackingClient(ENV.posthog);
 export const App = () => {
   return (
     <TrackingProvider client={trackingClient}>
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <ThemeProvider theme={theme}>
-          <ReactQueryDevtools initialIsOpen={false} />
-          <Router>
-            <ScoreListenerProvider>
-              <Layout>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <ThemeProvider theme={theme}>
+            <ReactQueryDevtools initialIsOpen={false} />
+            <Router>
+              <ScoreListenerProvider>
                 <E2E />
                 <ScrollToTopOnPageChange />
                 <Toasters />
@@ -71,12 +75,11 @@ export const App = () => {
                     <CollectiviteRoutes />
                   </Route>
                 </Switch>
-              </Layout>
-            </ScoreListenerProvider>
-          </Router>
-        </ThemeProvider>
-      </AuthProvider>
-    </QueryClientProvider>
+              </ScoreListenerProvider>
+            </Router>
+          </ThemeProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     </TrackingProvider>
   );
 };

@@ -5,7 +5,7 @@ import {useCollectiviteId} from 'core-logic/hooks/params';
 import {TablesInsert} from '@tet/api';
 import {supabaseClient} from 'core-logic/api/supabase';
 import {useLocalisation} from 'core-logic/hooks/useLocalisation';
-import {ENV} from 'environmentVariables';
+import {ENV} from '@tet/app/environmentVariables';
 
 /**
  * Représente la visite d'une page.
@@ -53,4 +53,3 @@ export const VisitTracker = () => {
 
   return null;
 };
-
