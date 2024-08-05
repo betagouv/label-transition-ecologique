@@ -3,7 +3,7 @@ import {useMutation, useQueryClient} from 'react-query';
 import {useAuth} from 'core-logic/api/auth/AuthProvider';
 import {supabaseClient} from 'core-logic/api/supabase';
 import Modal from 'ui/shared/floating-ui/Modal';
-import {ReactComponent as ContractSVG} from './contract.svg';
+import ContractSVG from './contract.svg';
 
 export type TAccepterCGUProps = {
   isLoading?: boolean;
@@ -18,7 +18,9 @@ export const AccepterCGUContent = (props: TAccepterCGUProps) => {
   return (
     <div className="fr-mb-4w" data-test="AccepterCGU">
       <div className="flex flex-col fr-mb-2w">
-        <ContractSVG className="self-center" />
+        <div className="self-center">
+          <ContractSVG />
+        </div>
       </div>
       <h4>Mise à jour des conditions générales d’utilisation </h4>
       <p>

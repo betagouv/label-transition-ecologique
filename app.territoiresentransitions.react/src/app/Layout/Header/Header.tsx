@@ -8,6 +8,7 @@ import {AccesRapide} from './AccesRapide';
 import {MaintenanceNotice} from './MaintenanceNotice';
 import ademeSrc from '../../static/img/ademe.svg';
 import Link from 'next/link';
+import Image from 'next/image';
 
 /** Valeur de la hauteur sur header de l'application */
 export const appHeaderHeight = 183;
@@ -118,7 +119,7 @@ const Brand = (props: HeaderPropsWithModalState) => {
       </div>
       <div className="fr-header__operator">
         <div className="fr-grid-row">
-          <img src={ademeSrc} alt="ADEME" width="70" height="80" />
+          <Image src={ademeSrc} alt="ADEME" width="70" height="80" />
         </div>
       </div>
       <div className="fr-header__navbar">

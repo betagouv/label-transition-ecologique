@@ -1,8 +1,8 @@
 import {CellProps} from 'react-table';
 import {getMaxDepth, PriorisationRow} from './queries';
 import {toLocaleFixed} from 'utils/toFixed';
-import {ReactComponent as Up} from './up.svg';
-import {ReactComponent as Down} from './down.svg';
+import Up from './up.svg';
+import Down from './down.svg';
 
 const PICTOS = {
   up: Up,
@@ -55,7 +55,9 @@ const CellValue = (
       className={'cell-value flex justify-end items-baseline w-full text-right'}
     >
       {Picto ? (
-        <Picto style={fill ? {fill, marginRight: 6} : undefined} />
+        <div style={fill ? {fill, marginRight: 6} : undefined}>
+          <Picto />
+        </div>
       ) : null}
       {children}
     </span>
