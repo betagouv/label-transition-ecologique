@@ -1,12 +1,12 @@
-import {useEffect} from 'react';
 import {useId} from '@next/floating-ui/react';
+import {recherchesCollectivitesUrl} from 'app/paths';
 import classNames from 'classnames';
-import {HeaderPropsWithModalState, TNavDropdown, TNavItem} from './types';
+import Link from 'next/link';
+import {usePathname} from 'next/navigation';
+import {useEffect} from 'react';
 import {makeNavItems, makeSecondaryNavItems} from './makeNavItems';
 import {SelectCollectivite} from './SelectCollectivite';
-import {recherchesCollectivitesUrl} from 'app/paths';
-import {usePathname} from 'next/navigation';
-import Link from 'next/link';
+import {HeaderPropsWithModalState, TNavDropdown, TNavItem} from './types';
 
 /**
  * Affiche la nvaigation principale et le sélecteur de collectivité
