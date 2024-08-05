@@ -118,7 +118,6 @@ const Brand = (props: HeaderPropsWithModalState) => {
       </div>
       <div className="fr-header__operator">
         <div className="fr-grid-row">
-          {/* <RepubliqueFrancaiseLogo className="h-full" />, */}
           <img src={ademeSrc} alt="ADEME" width="70" height="80" />
         </div>
       </div>
