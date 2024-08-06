@@ -4,7 +4,7 @@ import {AccordionControlled} from 'ui/Accordion';
 import PlanActionFiltres from './PlanActionFiltres';
 
 import {useCollectiviteId} from 'core-logic/hooks/params';
-import {useSearchParams} from 'core-logic/hooks/query';
+import {useSearchParamsState} from 'core-logic/hooks/query';
 import {TFilters, nameToShortNames} from '../../FicheAction/data/filters';
 import {PlanNode} from '../data/types';
 
@@ -25,7 +25,7 @@ const PlanActionFiltresAccordeon = ({
 
   // on utilise les params pour savoir si l'URL contient des filtres et
   // ainsi afficher l'accordéon ouvert ou non au montage de la page
-  const [filters] = useSearchParams<TFilters>(
+  const [filters] = useSearchParamsState<TFilters>(
     isAxePage
       ? `/collectivite/${collectivite_id}/plans/plan/${plan.id}/${axe.id}`
       : `/collectivite/${collectivite_id}/plans/plan/${plan.id}`,

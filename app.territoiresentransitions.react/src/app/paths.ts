@@ -13,14 +13,10 @@ export const profilPath = '/profil';
 export const monComptePath = `${profilPath}/mon-compte`;
 export const mesCollectivitesPath = `${profilPath}/mes-collectivites`;
 
-export const recherchesPath = '/recherches';
-export const recherchesParam = 'recherchesId';
+const recherchesPath = '/recherches';
 export type RecherchesViewParam = 'collectivites' | 'plans';
-export const recherchesLandingPath = `${recherchesPath}/:${recherchesParam}`;
 export const recherchesCollectivitesUrl = `${recherchesPath}/collectivites`;
 export const recherchesPlansUrl = `${recherchesPath}/plans`;
-
-export const ancienRecherchesPath = '/toutes_collectivites';
 
 // Utilisé après le login ou lorsqu'on clique sur le logo en étant connecté.
 export const homePath = recherchesCollectivitesUrl;

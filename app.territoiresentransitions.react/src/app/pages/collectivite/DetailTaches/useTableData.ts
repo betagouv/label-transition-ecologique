@@ -1,6 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 import {TableOptions} from 'react-table';
-import {useSearchParams} from 'core-logic/hooks/query';
+import {useSearchParamsState} from 'core-logic/hooks/query';
 import {useCollectiviteId, useReferentielId} from 'core-logic/hooks/params';
 import {
   fetchActionStatutsList,
@@ -47,7 +47,7 @@ export const useTableData: UseTableData = () => {
   const queryClient = useQueryClient();
 
   // filtre initial
-  const [filters, setFilters, filtersCount] = useSearchParams<TFilters>(
+  const [filters, setFilters, filtersCount] = useSearchParamsState<TFilters>(
     'detail',
     initialFilters,
     nameToShortNames

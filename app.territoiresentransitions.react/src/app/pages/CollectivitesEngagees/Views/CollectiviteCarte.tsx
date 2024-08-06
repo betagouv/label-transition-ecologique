@@ -1,18 +1,18 @@
-import {Referentiel} from 'types/litterals';
-import {toPercentString} from 'utils/score';
+import {Icon} from '@tet/ui';
 import {referentielToName} from 'app/labels';
-import {NIVEAUX} from 'ui/labellisation/getNiveauInfo';
-import {GreyStar, RedStar} from 'ui/labellisation/Star';
 import {TCollectiviteCarte} from 'app/pages/CollectivitesEngagees/data/useFilteredCollectivites';
-import {useFonctionTracker} from 'core-logic/hooks/useFonctionTracker';
 import {makeCollectiviteAccueilUrl} from 'app/paths';
 import classNames from 'classnames';
-import {Icon} from '@tet/ui';
+import {useFonctionTracker} from 'core-logic/hooks/useFonctionTracker';
 import Link from 'next/link';
+import {Referentiel} from 'types/litterals';
+import {NIVEAUX} from 'ui/labellisation/getNiveauInfo';
+import {GreyStar, RedStar} from 'ui/labellisation/Star';
+import {toPercentString} from 'utils/score';
+import {useCollectivitesFilters} from './CollectivitesFiltersContext';
 
 type Props = {
   collectivite: TCollectiviteCarte;
-  canUserClickCard: boolean;
 };
 
 /**
@@ -22,8 +22,9 @@ type Props = {
  * Affiche le nom et des éléments de scores.
  * Lien vers le tableau de bord de la collectivité.
  */
-export const CollectiviteCarte = ({collectivite, canUserClickCard}: Props) => {
+export const CollectiviteCarte = ({collectivite}: Props) => {
   const tracker = useFonctionTracker();
+  const {canUserClickCard} = useCollectivitesFilters();
 
   return (
     <Link

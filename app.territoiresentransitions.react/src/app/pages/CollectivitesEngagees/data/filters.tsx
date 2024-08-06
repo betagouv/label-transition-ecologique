@@ -18,7 +18,10 @@ export const getNumberOfActiveFilters = (
   );
 };
 
-export type SetFilters = (newFilters: CollectiviteEngagee.Filters) => void;
+export type SetFilters = (
+  newFilters: Partial<CollectiviteEngagee.Filters>
+) => void;
+
 // valeurs par défaut des filtres
 export const initialFilters: CollectiviteEngagee.Filters = {
   nom: '',
@@ -33,6 +36,7 @@ export const initialFilters: CollectiviteEngagee.Filters = {
   tauxDeRemplissage: [],
   trierPar: ['score'],
 };
+
 // mapping nom des filtres => params dans l'url
 export const nameToShortNames = {
   nom: 'col',

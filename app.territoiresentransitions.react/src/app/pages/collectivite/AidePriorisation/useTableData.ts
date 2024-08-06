@@ -1,7 +1,7 @@
 import {useQuery} from 'react-query';
 import {TableOptions} from 'react-table';
 import {useCollectiviteId, useReferentielId} from 'core-logic/hooks/params';
-import {useSearchParams} from 'core-logic/hooks/query';
+import {useSearchParamsState} from 'core-logic/hooks/query';
 import {useReferentiel} from '../ReferentielTable/useReferentiel';
 import {fetchRows, PriorisationRow} from './queries';
 import {initialFilters, nameToShortNames, TFilters} from './filters';
@@ -36,7 +36,7 @@ export const useTableData: UseTableData = () => {
   const referentiel = useReferentielId();
 
   // filtre initial
-  const [filters, setFilters, filtersCount] = useSearchParams<TFilters>(
+  const [filters, setFilters, filtersCount] = useSearchParamsState<TFilters>(
     'priorisation',
     initialFilters,
     nameToShortNames

@@ -1,7 +1,7 @@
 import {useQuery} from 'react-query';
 import {TableOptions} from 'react-table';
 import {useCollectiviteId, useReferentielId} from 'core-logic/hooks/params';
-import {useSearchParams} from 'core-logic/hooks/query';
+import {useSearchParamsState} from 'core-logic/hooks/query';
 import {useReferentiel} from '../ReferentielTable/useReferentiel';
 import {fetchHeaderRow, fetchRows, ProgressionRow} from './queries';
 import {initialFilters, nameToShortNames, TFilters} from './filters';
@@ -47,14 +47,14 @@ export const useTableData: UseTableData = () => {
   const referentiel = useReferentielId();
 
   // filtres actifs initialement
-  const [filters, setFilters, filtersCount] = useSearchParams<TFilters>(
+  const [filters, setFilters, filtersCount] = useSearchParamsState<TFilters>(
     'progression',
     initialFilters,
     nameToShortNames
   );
 
   // colonnes visibles initialement
-  const [options, setOptions] = useSearchParams<TColumnOptions>(
+  const [options, setOptions] = useSearchParamsState<TColumnOptions>(
     'progression',
     initialColumnOptions,
     optionToShortNames

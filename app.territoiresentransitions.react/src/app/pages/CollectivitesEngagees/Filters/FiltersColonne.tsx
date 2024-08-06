@@ -1,20 +1,19 @@
-import {useState} from 'react';
 import classNames from 'classnames';
+import {useState} from 'react';
 
 import {Filters} from './Filters';
 
 import {Button} from '@tet/ui';
-import {CollectiviteEngagee} from '@tet/api';
-import {SetFilters, getNumberOfActiveFilters} from '../data/filters';
 import {RecherchesViewParam} from 'app/paths';
+import {getNumberOfActiveFilters} from '../data/filters';
+import {useCollectivitesFilters} from '../Views/CollectivitesFiltersContext';
 
 type Props = {
   vue: RecherchesViewParam;
-  filters: CollectiviteEngagee.Filters;
-  setFilters: SetFilters;
 };
 
-const FiltersColonne = ({vue, filters, setFilters}: Props) => {
+const FiltersColonne = ({vue}: Props) => {
+  const {filters, setFilters} = useCollectivitesFilters();
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   const numberOfActiveFilters = getNumberOfActiveFilters(filters);

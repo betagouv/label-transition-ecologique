@@ -1,20 +1,21 @@
-import View, {
-  CollectivitesEngageesView,
-} from 'app/pages/CollectivitesEngagees/Views/View';
+'use client';
+
 import {CollectiviteCarte} from 'app/pages/CollectivitesEngagees/Views/CollectiviteCarte';
+import View from 'app/pages/CollectivitesEngagees/Views/View';
 import {
   TCollectiviteCarte,
   useFilteredCollectivites,
 } from 'app/pages/CollectivitesEngagees/data/useFilteredCollectivites';
+import {useCollectivitesFilters} from './CollectivitesFiltersContext';
 
-const CollectivitesView = (props: CollectivitesEngageesView) => {
-  /** Data */
+const CollectivitesView = () => {
+  const {filters} = useCollectivitesFilters();
+
   const {collectivites, collectivitesCount, isLoading} =
-    useFilteredCollectivites(props.filters);
+    useFilteredCollectivites(filters);
 
   return (
     <View
-      {...props}
       view="collectivites"
       data={collectivites}
       dataCount={collectivitesCount}
@@ -25,7 +26,6 @@ const CollectivitesView = (props: CollectivitesEngageesView) => {
           <CollectiviteCarte
             key={collectivite.collectivite_id}
             collectivite={collectivite}
-            canUserClickCard={props.canUserClickCard}
           />
         );
       }}

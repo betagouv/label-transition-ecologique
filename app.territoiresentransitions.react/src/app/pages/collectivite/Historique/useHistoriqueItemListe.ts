@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 import {useQuery, useQueryClient} from 'react-query';
 
 import {supabaseClient} from 'core-logic/api/supabase';
-import {useSearchParams} from 'core-logic/hooks/query';
+import {useSearchParamsState} from 'core-logic/hooks/query';
 import {TFilters, NB_ITEMS_PER_PAGE, nameToShortNames} from './filters';
 import {THistoriqueItem, THistoriqueProps} from './types';
 import {isValidFilter} from 'ui/shared/filters/commons';
@@ -105,7 +105,7 @@ export const useHistoriqueItemListe = (
   }, []);
 
   // filtre initial
-  const [filters, setFilters, filtersCount] = useSearchParams<TFilters>(
+  const [filters, setFilters, filtersCount] = useSearchParamsState<TFilters>(
     'historique',
     {collectivite_id, action_id},
     nameToShortNames

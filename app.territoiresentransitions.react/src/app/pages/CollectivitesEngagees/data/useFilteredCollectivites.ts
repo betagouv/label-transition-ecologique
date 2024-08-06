@@ -3,7 +3,6 @@ import {supabaseClient} from 'core-logic/api/supabase';
 import {NonNullableFields, Views, CollectiviteEngagee} from '@tet/api';
 import {NB_CARDS_PER_PAGE} from 'app/pages/CollectivitesEngagees/data/utils';
 
-
 /**
  * Element de la liste `collectivite_card`, utilisée par la vue toutes les
  * collectivités.
@@ -16,9 +15,11 @@ type FilterOperator = 'in' | 'ov';
 /**
  * Renvoi une liste de collectivités en fonction d'un ensemble de filtres
  */
-export const useFilteredCollectivites = (args: CollectiviteEngagee.Filters) => {
-  const {data, isLoading} = useQuery(['collectivite_card', args], () =>
-    fetchCollectiviteCards(args)
+export const useFilteredCollectivites = (
+  filters: CollectiviteEngagee.Filters
+) => {
+  const {data, isLoading} = useQuery(['collectivite_card', filters], () =>
+    fetchCollectiviteCards(filters)
   );
 
   return {

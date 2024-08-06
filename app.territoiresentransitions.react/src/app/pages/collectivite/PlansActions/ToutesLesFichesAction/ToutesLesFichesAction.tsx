@@ -3,7 +3,7 @@ import ModalFiltresToutesLesFichesAction from 'app/pages/collectivite/PlansActio
 import FichesActionListe from 'app/pages/collectivite/TableauDeBord/Module/ModuleFichesActions/FichesActionListe';
 import {makeCollectiviteToutesLesFichesUrl} from 'app/paths';
 import {useCollectiviteId} from 'core-logic/hooks/params';
-import {useSearchParams} from 'core-logic/hooks/query';
+import {useSearchParamsState} from 'core-logic/hooks/query';
 
 // TODO: implémenter les filtres "sans" (ex. "sans_pilote")
 const nameToparams: Record<keyof Filtre | 'sort' | 'page', string> = {
@@ -31,7 +31,7 @@ const nameToparams: Record<keyof Filtre | 'sort' | 'page', string> = {
 const ToutesLesFichesAction = () => {
   const collectiviteId = useCollectiviteId();
 
-  const [filters, setFilters] = useSearchParams<Filtre>(
+  const [filters, setFilters] = useSearchParamsState<Filtre>(
     makeCollectiviteToutesLesFichesUrl({collectiviteId: collectiviteId!}),
     {},
     nameToparams

@@ -1,8 +1,8 @@
 import {Referentiel} from 'types/litterals';
-import {useSearchParams} from 'core-logic/hooks/query';
+import {useSearchParamsState} from 'core-logic/hooks/query';
 
 export const usePersoFilters = () =>
-  useSearchParams<{referentiels: Referentiel[]}>(
+  useSearchParamsState<{referentiels: Referentiel[]}>(
     'personnalisation',
     {referentiels: ['eci', 'cae']},
     {referentiels: 'r'}

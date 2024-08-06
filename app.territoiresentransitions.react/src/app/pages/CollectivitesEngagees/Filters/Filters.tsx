@@ -1,8 +1,8 @@
-import {Field, SelectFilter, Input} from '@tet/ui';
+import {Field, Input, SelectFilter} from '@tet/ui';
 
-import {useFonctionTracker} from 'core-logic/hooks/useFonctionTracker';
-import {useDepartements} from '../data/useDepartements';
-import {useRegions} from '../data/useRegions';
+import {CollectiviteEngagee} from '@tet/api';
+import {usePlanTypeListe} from 'app/pages/collectivite/PlansActions/PlanAction/data/usePlanTypeListe';
+import {SetFilters} from 'app/pages/CollectivitesEngagees/data/filters';
 import {
   niveauLabellisationCollectiviteOptions,
   populationCollectiviteOptions,
@@ -10,13 +10,13 @@ import {
   tauxRemplissageCollectiviteOptions,
   typeCollectiviteOptions,
 } from 'app/pages/CollectivitesEngagees/data/filtreOptions';
-import {usePlanTypeListe} from 'app/pages/collectivite/PlansActions/PlanAction/data/usePlanTypeListe';
 import {MultiSelectCheckboxes} from 'app/pages/CollectivitesEngagees/Filters/MultiSelectCheckboxes';
-import SpinnerLoader from 'ui/shared/SpinnerLoader';
-import {useEffect, useState} from 'react';
-import {CollectiviteEngagee} from '@tet/api';
-import {SetFilters} from 'app/pages/CollectivitesEngagees/data/filters';
 import {RecherchesViewParam} from 'app/paths';
+import {useFonctionTracker} from 'core-logic/hooks/useFonctionTracker';
+import {useEffect, useState} from 'react';
+import SpinnerLoader from 'ui/shared/SpinnerLoader';
+import {useDepartements} from '../data/useDepartements';
+import {useRegions} from '../data/useRegions';
 
 type Props = {
   vue: RecherchesViewParam;
@@ -32,12 +32,12 @@ export const Filters = ({vue, filters, setFilters}: Props) => {
 
   const isLoading = isRegionsLoading || isDepartementsLoading;
 
-  const [search, setSearch] = useState(filters.nom);
+  // const [search, setSearch] = useState(filters.nom);
 
   // Afin de réinitialiser la recherche à la désactivation des filtres
-  useEffect(() => {
-    setSearch(filters.nom);
-  }, [filters.nom]);
+  // useEffect(() => {
+  //   setSearch(filters.nom);
+  // }, [filters.nom]);
 
   return (
     <div className="flex flex-col gap-8">
@@ -50,12 +50,14 @@ export const Filters = ({vue, filters, setFilters}: Props) => {
           <Input
             data-test="CollectiviteSearchInput"
             type="search"
-            onChange={e => setSearch(e.target.value)}
+            // onChange={e => setSearch(e.target.value)}
             onSearch={v => {
-              setFilters({...filters, nom: v});
+              setFilters({
+                nom: v,
+              });
               tracker({fonction: 'recherche', action: 'saisie'});
             }}
-            value={search}
+            value={filters.nom}
             placeholder="Rechercher par nom de collectivité"
             displaySize="sm"
           />
@@ -66,7 +68,6 @@ export const Filters = ({vue, filters, setFilters}: Props) => {
                 options={planTypeOptions ?? []}
                 onChange={({values}) => {
                   setFilters({
-                    ...filters,
                     typesPlan: (values as string[]) ?? [],
                   });
                   tracker({
@@ -98,7 +99,6 @@ export const Filters = ({vue, filters, setFilters}: Props) => {
                   );
                   // on désélectionne aussi les départements associés à cette région
                   setFilters({
-                    ...filters,
                     regions: (values as string[]) ?? [],
                     departments: filters.departments.filter(
                       d => !deps.map(dep => dep.code).includes(d)
@@ -113,7 +113,6 @@ export const Filters = ({vue, filters, setFilters}: Props) => {
                   ) {
                     // si ce département n'appartient pas à la région sélectionnée, on le déselectionne
                     setFilters({
-                      ...filters,
                       regions: (values as string[]) ?? [],
                       departments: filters.departments.filter(
                         d =>
@@ -123,7 +122,6 @@ export const Filters = ({vue, filters, setFilters}: Props) => {
                     });
                   } else {
                     setFilters({
-                      ...filters,
                       regions: (values as string[]) ?? [],
                     });
                   }

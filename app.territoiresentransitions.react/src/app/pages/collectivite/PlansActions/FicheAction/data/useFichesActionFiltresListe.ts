@@ -1,7 +1,7 @@
 import {useQuery} from 'react-query';
 
 import {supabaseClient} from 'core-logic/api/supabase';
-import {useSearchParams} from 'core-logic/hooks/query';
+import {useSearchParamsState} from 'core-logic/hooks/query';
 import {nameToShortNames, NB_FICHES_PER_PAGE, TFilters} from './filters';
 import {useCollectiviteId} from 'core-logic/hooks/params';
 import {FicheResume} from './types';
@@ -102,7 +102,7 @@ export const useFichesActionFiltresListe = ({
 }: Args): TFichesActionsListe => {
   const collectivite_id = useCollectiviteId();
 
-  const [filters, setFilters, filtersCount] = useSearchParams<TFilters>(
+  const [filters, setFilters, filtersCount] = useSearchParamsState<TFilters>(
     url,
     initialFilters,
     nameToShortNames

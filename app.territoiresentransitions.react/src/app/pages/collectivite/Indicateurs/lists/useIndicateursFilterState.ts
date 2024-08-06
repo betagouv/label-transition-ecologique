@@ -1,5 +1,5 @@
 import {ITEM_ALL} from 'ui/shared/filters/commons';
-import {useSearchParams} from 'core-logic/hooks/query';
+import {useSearchParamsState} from 'core-logic/hooks/query';
 import {Filters} from './useFilteredIndicateurDefinitions';
 import {ITEM_FICHES_NON_CLASSEES} from './FiltrePlans';
 import {Enums} from '@tet/api';
@@ -38,7 +38,7 @@ const RE_INT = /^\d+$/;
  */
 export const useIndicateursFilterState = () => {
   // filtre initial
-  const [filterParams, setFilterParams] = useSearchParams<TFilters>(
+  const [filterParams, setFilterParams] = useSearchParamsState<TFilters>(
     '/',
     initialFilters,
     nameToShortNames

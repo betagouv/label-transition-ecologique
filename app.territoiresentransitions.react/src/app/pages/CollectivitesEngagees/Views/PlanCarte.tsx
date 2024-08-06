@@ -7,10 +7,10 @@ import {generateTitle} from 'app/pages/collectivite/PlansActions/FicheAction/dat
 import {makeCollectivitePlanActionUrl} from 'app/paths';
 import {useFonctionTracker} from 'core-logic/hooks/useFonctionTracker';
 import Link from 'next/link';
+import {useCollectivitesFilters} from './CollectivitesFiltersContext';
 
 type Props = {
   plan: CollectiviteEngagee.TPlanCarte;
-  canUserClickCard: boolean;
 };
 
 /**
@@ -19,8 +19,9 @@ type Props = {
  *
  * Lien vers la page du plan.
  */
-export const PlanCarte = ({plan, canUserClickCard}: Props) => {
+export const PlanCarte = ({plan}: Props) => {
   const tracker = useFonctionTracker();
+  const {canUserClickCard} = useCollectivitesFilters();
 
   return (
     <Link
