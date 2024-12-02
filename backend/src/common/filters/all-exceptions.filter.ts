@@ -32,7 +32,7 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
     const request = ctx.getRequest<Request>();
 
     // Log the error
-    this.logger.error(exception);
+    this.logger.fatal(exception);
 
     const httpErrorResponse = getHttpErrorResponse(exception);
     httpErrorResponse.path = request.url;

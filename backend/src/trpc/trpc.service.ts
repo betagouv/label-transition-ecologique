@@ -3,10 +3,12 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { initTRPC, TRPCError } from '@trpc/server';
 import { CreateExpressContextOptions } from '@trpc/server/adapters/express';
 import {
+  AuthRole,
   AuthUser,
   isAnonymousUser,
   isAuthenticatedUser,
 } from '../auth/models/auth.models';
+import { ContextStore } from '../common/services/context.service';
 
 @Injectable()
 export class TrpcService {
@@ -21,15 +23,25 @@ export class TrpcService {
    * Create an unprotected public procedure
    * @see https://trpc.io/docs/v11/procedures
    **/
-  publicProcedure = this.trpc.procedure;
+  publicProcedure = this.trpc.procedure.use(
+    this.trpc.middleware(async ({ next, ctx, getRawInput }) => {
+      const rawInput = await getRawInput();
+      ContextStore.autoSetContextFromPayload(rawInput);
+
+      return next({ ctx: ctx });
+    })
+  );
 
   /**
    * Create an anonymous procedure
    * @see https://trpc.io/docs/v11/procedures
    **/
   anonProcedure = this.trpc.procedure.use(
-    this.trpc.middleware(({ next, ctx }) => {
+    this.trpc.middleware(async ({ next, ctx, getRawInput }) => {
       const anonUser = ctx.user;
+
+      const rawInput = await getRawInput();
+      ContextStore.autoSetContextFromPayload(rawInput);
 
       if (!isAnonymousUser(anonUser)) {
         throw new TRPCError({
@@ -47,10 +59,14 @@ export class TrpcService {
    * @see https://trpc.io/docs/v11/procedures
    **/
   authedProcedure = this.trpc.procedure.use(
-    this.trpc.middleware(({ next, ctx }) => {
+    this.trpc.middleware(async ({ next, ctx, getRawInput }) => {
       const authUser = ctx.user;
 
+      const rawInput = await getRawInput();
+      ContextStore.autoSetContextFromPayload(rawInput);
+
       if (!isAuthenticatedUser(authUser)) {
+        console.log('unauthorized');
         throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: 'Not authenticated',
@@ -104,6 +120,11 @@ export async function createContext(
     if (!user) {
       return { user: null };
     }
+
+    ContextStore.updateContext({
+      userId: user.id || undefined,
+      authRole: user.role as AuthRole,
+    });
 
     return {
       user: {

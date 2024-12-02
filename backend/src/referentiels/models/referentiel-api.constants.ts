@@ -1,0 +1,2 @@
+export const REFERENTIEL_ID_PARAM_KEY = 'referentielId';
+export const REFERENTIEL_ID_ROUTE_PARAM = `:${REFERENTIEL_ID_PARAM_KEY}`;

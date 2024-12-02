@@ -13,6 +13,10 @@ import { Request } from 'express';
 import { AllowAnonymousAccess } from '../../auth/decorators/allow-anonymous-access.decorator';
 import { TokenInfo } from '../../auth/decorators/token-info.decorators';
 import { AuthenticatedUser, AuthUser } from '../../auth/models/auth.models';
+import {
+  COLLECTIVITE_ID_PARAM_KEY,
+  COLLECTIVITE_ID_ROUTE_PARAM,
+} from '../../collectivites/models/collectivite-api.constants';
 import { checkMultipleReferentielScoresRequestSchema } from '../models/check-multiple-referentiel-scores.request';
 import { CheckReferentielScoresRequestType } from '../models/check-referentiel-scores.request';
 import { getActionStatutsRequestSchema } from '../models/get-action-statuts.request';
@@ -25,6 +29,10 @@ import { getReferentielScoresRequestSchema } from '../models/get-referentiel-sco
 import { getReferentielScoresResponseSchema } from '../models/get-referentiel-scores.response';
 import { getScoreSnapshotsRequestSchema } from '../models/get-score-snapshots.request';
 import { getScoreSnapshotsResponseSchema } from '../models/get-score-snapshots.response';
+import {
+  REFERENTIEL_ID_PARAM_KEY,
+  REFERENTIEL_ID_ROUTE_PARAM,
+} from '../models/referentiel-api.constants';
 import { ReferentielType } from '../models/referentiel.enum';
 import ReferentielsScoringSnapshotsService from '../services/referentiels-scoring-snapshots.service';
 import ReferentielsScoringService from '../services/referentiels-scoring.service';
@@ -109,11 +117,13 @@ export class ReferentielsScoringController {
   }
 
   @AllowAnonymousAccess()
-  @Get('collectivites/:collectivite_id/referentiels/:referentiel_id/scores')
+  @Get(
+    `collectivites/${COLLECTIVITE_ID_ROUTE_PARAM}/referentiels/${REFERENTIEL_ID_ROUTE_PARAM}/scores`
+  )
   @ApiResponse({ type: GetReferentielScoresResponseClass })
   async getReferentielScoring(
-    @Param('collectivite_id') collectiviteId: number,
-    @Param('referentiel_id') referentielId: ReferentielType,
+    @Param(COLLECTIVITE_ID_PARAM_KEY) collectiviteId: number,
+    @Param(REFERENTIEL_ID_PARAM_KEY) referentielId: ReferentielType,
     @Query() parameters: GetReferentielScoresRequestClass,
     @TokenInfo() tokenInfo: AuthenticatedUser
   ): Promise<GetReferentielScoresResponseClass> {
@@ -180,11 +190,11 @@ export class ReferentielsScoringController {
   }
 
   @Delete(
-    'collectivites/:collectivite_id/referentiels/:referentiel_id/score-snapshots/:snapshot_ref'
+    `collectivites/${COLLECTIVITE_ID_ROUTE_PARAM}/referentiels/${REFERENTIEL_ID_ROUTE_PARAM}/score-snapshots/:snapshot_ref`
   )
   async deleteReferentielScoreSnapshot(
-    @Param('collectivite_id') collectiviteId: number,
-    @Param('referentiel_id') referentielId: ReferentielType,
+    @Param(COLLECTIVITE_ID_PARAM_KEY) collectiviteId: number,
+    @Param(REFERENTIEL_ID_PARAM_KEY) referentielId: ReferentielType,
     @Param('snapshot_ref') snapshotRef: string,
     @TokenInfo() tokenInfo: AuthUser
   ): Promise<void> {

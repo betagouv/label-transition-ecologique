@@ -1,31 +1,60 @@
 // WARNING: Do this import first
 import './common/services/sentry.service';
 // Other imports
-import { patchNestjsSwagger, ZodValidationPipe } from '@anatine/zod-nestjs';
-import { Logger } from '@nestjs/common';
+import { patchNestjsSwagger } from '@anatine/zod-nestjs';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { ContextRouteParametersInterceptor } from './common/interceptors/context-route-parameters.interceptor';
+import { CustomZodValidationPipe } from './common/pipetransforms/custom-zod-validation.pipe';
+import { withContext } from './common/services/context.service';
+import { CustomLogger } from './common/services/custom-logger.service';
 import { initApplicationCredentials } from './common/services/gcloud.helper';
 import { TrpcRouter } from './trpc/trpc.router';
 
-const logger = new Logger('main');
 const port = process.env.PORT || 8080;
-logger.log(`Launching NestJS app on port ${port}`);
 
 async function bootstrap() {
   initApplicationCredentials();
 
-  const app = await NestFactory.create(AppModule, {
-    logger: ['fatal', 'error', 'warn', 'log'], // No debug by default
+  const app = await NestFactory.create(AppModule);
+  const logger = new CustomLogger({
+    messageKey: process.env.NODE_ENV === 'production' ? 'message' : 'msg',
+    level: 'info',
+    formatters:
+      process.env.NODE_ENV === 'production'
+        ? {
+            level: (label, number) => {
+              // Compliant with https://opentelemetry.io/docs/specs/otel/logs/data-model/
+              return {
+                severity_number: number,
+                severity_text: label,
+              };
+            },
+          }
+        : undefined,
+    transport:
+      process.env.NODE_ENV === 'production'
+        ? undefined // Default configuration to console in json
+        : {
+            target: 'pino-pretty',
+            options: {
+              singleLine: true,
+              colorize: true,
+            },
+          },
   });
+  logger.log(`Launching NestJS app on port ${port}`);
+  app.useLogger(logger);
+  app.use(withContext);
+  app.useGlobalInterceptors(new ContextRouteParametersInterceptor());
+
   const { httpAdapter } = app.get(HttpAdapterHost);
 
   app.enableCors();
 
-  // TODO: configure validation
-  app.useGlobalPipes(new ZodValidationPipe());
+  app.useGlobalPipes(new CustomZodValidationPipe());
 
   // Seulement une v1 pour l'instant
   app.setGlobalPrefix('api/v1', {

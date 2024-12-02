@@ -102,7 +102,7 @@ export class AuthService {
   }
 
   async verifieAccesAuxCollectivites(
-    user: AuthUser,
+    user: AuthUser | null,
     collectiviteIds: number[],
     niveauAccessMinimum: NiveauAcces,
     doNotThrow?: boolean
@@ -113,12 +113,14 @@ export class AuthService {
       droits = await this.getDroitsUtilisateur(user.id, collectiviteIds);
     }
 
-    const authorise = this.aDroitsSuffisants(
-      user.role,
-      droits,
-      collectiviteIds,
-      niveauAccessMinimum
-    );
+    const authorise =
+      Boolean(user) &&
+      this.aDroitsSuffisants(
+        user!.role,
+        droits,
+        collectiviteIds,
+        niveauAccessMinimum
+      );
 
     if (!authorise && !doNotThrow) {
       throw new UnauthorizedException(`Droits insuffisants`);

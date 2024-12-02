@@ -1,0 +1,23 @@
+[transforms.parse]
+inputs = [ "pipe"]
+type = "remap"
+source = '''
+  .parsed_timestamp = parse_timestamp!(.timestamp, format: "%Y-%m-%dT%H:%M:%S.%fZ")
+  if is_timestamp(.parsed_timestamp) {
+    .timestamp = to_unix_timestamp(.parsed_timestamp)
+  } else {
+    .timestamp = to_unix_timestamp(now())
+  }
+  del(.parsed_timestamp)
+  . = parse_json(slice!(.message, start: 44)) ?? .
+'''
+
+[sinks.hook]
+type = "http"
+inputs = ["parse"]
+encoding.codec = "json"
+uri = "${SIGNOZ_URI}"
+method = "post"
+
+[sinks.hook.request.headers]
+signoz-access-token = "${SIGNOZ_TOKEN}"

@@ -1,4 +1,5 @@
 import { INestApplication, Injectable, Logger } from '@nestjs/common';
+import * as Sentry from '@sentry/nestjs';
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import { CollectiviteMembresRouter } from '../collectivites/membres/membres.router';
 import { PersonnesRouter } from '../collectivites/personnes.router';
@@ -57,6 +58,11 @@ export class TrpcRouter {
       `/trpc`,
       createExpressMiddleware({
         router: this.appRouter,
+        onError: ({ error }) => {
+          this.logger.error(error);
+          // Capture error with Sentry
+          Sentry.captureException(error);
+        },
         createContext: (opts) => createContext(this.supabase.client, opts),
       })
     );
