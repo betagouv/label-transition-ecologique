@@ -30,12 +30,12 @@ docker:
 deploy: ## Déploie le backend dans une app Koyeb existante
   ARG --required KOYEB_API_KEY
   ARG --required DEPLOYMENT_TIMESTAMP
-  ARG SERVICE_NAME=$ENV_NAME-tools-automation-api
+  ARG SERVICE_NAME=$ENV_NAME-tools-autom-api ## Max 23 characters
   FROM ../../+koyeb --KOYEB_API_KEY=$KOYEB_API_KEY
 
   RUN ./koyeb services update $SERVICE_NAME/tools-automation-api \
     --debug \
-    --docker $BACKEND_IMG_NAME \
+    --docker $TOOLS_AUTOMATION_API_IMG_NAME \
     --env ENV_NAME=$ENV_NAME \
     --env DEPLOYMENT_TIMESTAMP=$DEPLOYMENT_TIMESTAMP
 
