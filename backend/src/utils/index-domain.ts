@@ -2,6 +2,7 @@
 // Exports from this file can be imported with `@/domain/*` alias path.
 
 export * from './column.utils';
+export * from './count-by.dto';
 export * from './enum.utils';
 export * from './pagination.schema';
 

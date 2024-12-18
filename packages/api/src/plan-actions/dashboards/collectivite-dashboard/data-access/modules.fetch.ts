@@ -1,10 +1,12 @@
 import { planActionsFetch } from '@/api/plan-actions';
 import { DBClient } from '@/api/typeUtils';
+import { DateTime } from 'luxon';
 import { objectToCamel } from 'ts-case-convert';
 import {
   ModuleSelect,
-  defaultSlugsSchema,
+  collectiviteDefaultModuleKeysSchema,
   getDefaultModule,
+  moduleTypeSchema,
 } from '../domain/module.schema';
 
 export type FetchReturnValue = Array<ModuleSelect>;
@@ -49,18 +51,18 @@ async function mergeWithDefaultModules(
   fetchedModules: FetchReturnValue,
   props: Props
 ) {
-  // On crée une map des modules récupérés avec le slug comme clé
+  // On crée une map des modules récupérés avec la defaultKey ou l'id (si pas module par défaut) comme clé
   const fetchedModulesMap = new Map(
-    fetchedModules.map((module) => [module.slug, module])
+    fetchedModules.map((module) => [module.defaultKey || module.id, module])
   );
 
   // On ajoute les modules par défaut non présents dans les modules récupérés
-  for (const slug of defaultSlugsSchema.options) {
-    if (fetchedModulesMap.get(slug)) {
+  for (const defaultKey of collectiviteDefaultModuleKeysSchema.options) {
+    if (fetchedModulesMap.get(defaultKey)) {
       continue;
     }
 
-    const defaultModule = await getDefaultModule(slug, {
+    const defaultModule = await getDefaultModule(defaultKey, {
       ...props,
       getPlanActionIds: () =>
         planActionsFetch(props).then((data) =>
@@ -68,16 +70,19 @@ async function mergeWithDefaultModules(
         ),
     });
 
-    fetchedModulesMap.set(slug, defaultModule);
+    fetchedModulesMap.set(defaultKey, defaultModule);
   }
 
   // Ordonne manuellement les modules pour qu'ils apparaissent dans l'ordre voulu
-  return [
-    fetchedModulesMap.get(
-      defaultSlugsSchema.enum['suivi-plan-actions']
-    ) as ModuleSelect,
-    fetchedModulesMap.get(
-      defaultSlugsSchema.enum['fiche-actions-par-statut']
-    ) as ModuleSelect,
-  ];
+  return Array.from(fetchedModulesMap.values()).sort((a, b) => {
+    const moduleATypeIndex = moduleTypeSchema.options.indexOf(a.type);
+    const moduleBTypeIndex = moduleTypeSchema.options.indexOf(b.type);
+    if (moduleATypeIndex !== moduleBTypeIndex) {
+      return moduleATypeIndex - moduleBTypeIndex;
+    } else {
+      const aCreationDate = DateTime.fromISO(a.createdAt);
+      const bCreationDate = DateTime.fromISO(b.createdAt);
+      return aCreationDate.toMillis() - bCreationDate.toMillis();
+    }
+  });
 }

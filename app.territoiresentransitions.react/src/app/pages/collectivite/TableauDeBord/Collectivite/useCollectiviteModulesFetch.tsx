@@ -7,7 +7,7 @@ import { useQuery } from 'react-query';
 export const useCollectiviteModulesFetch = () => {
   const collectiviteId = useCollectiviteId();
 
-  return useQuery(getQueryKey(collectiviteId), async () => {
+  return useQuery(getCollectiviteModulesQueryKey(collectiviteId), async () => {
     if (!collectiviteId) {
       throw new Error('Aucune collectivité associée');
     }
@@ -25,5 +25,6 @@ export const useCollectiviteModulesFetch = () => {
   });
 };
 
-export const getQueryKey = (collectiviteId?: number | null) =>
-  ['collectivite-dashboard-modules', collectiviteId] as const;
+export const getCollectiviteModulesQueryKey = (
+  collectiviteId?: number | null
+) => ['collectivite-dashboard-modules', collectiviteId] as const;

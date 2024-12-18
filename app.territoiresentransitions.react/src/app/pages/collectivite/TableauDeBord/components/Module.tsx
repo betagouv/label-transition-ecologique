@@ -5,10 +5,17 @@ import FilterBadges, {
   useFiltersToBadges,
 } from '@/app/ui/shared/filters/filter-badges';
 import SpinnerLoader from '@/app/ui/shared/SpinnerLoader';
-import { Button, ButtonGroup } from '@/ui';
+import { BottomAlertOkCancel, Button, ButtonGroup, InfoTooltip } from '@/ui';
 import { OpenState } from '@/ui/utils/types';
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
+import ThreeDotMenu, {
+  TOptionWithIcon,
+} from '../../../../../ui/shared/select/ThreeDotMenu';
+import {
+  OPTION_DELETE,
+  OPTION_EDIT,
+} from '../../Indicateurs/Indicateur/detail/useTableRowState';
 
 export type ModuleDisplay = 'circular' | 'row';
 
@@ -27,6 +34,11 @@ type Props = {
    * à afficher au clique des boutons d'édition.
    * Récupère le state d'ouverture en argument */
   editModal?: (modalState: OpenState) => React.ReactNode;
+
+  /**
+   * Fonction appelée lors de la confirmation de suppression du module.
+   */
+  onDeleteConfirmed?: () => void;
   /** État de loading générique */
   isLoading: boolean;
   /** État vide générique */
@@ -54,6 +66,7 @@ const Module = ({
   filtre = {},
   symbole,
   editModal,
+  onDeleteConfirmed,
   isLoading,
   isEmpty,
   children,
@@ -63,6 +76,9 @@ const Module = ({
   onSettingsClick,
 }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [confirmDeleteClose, setConfirmDeleteClose] = useState<
+    (() => void) | null
+  >(null);
 
   const { count } = usePlanActionsCount();
 
@@ -72,6 +88,39 @@ const Module = ({
       planActions: filtre.planActionIds?.length === count && 'Tous les plans',
     },
   });
+
+  const moduleOptions = useMemo<TOptionWithIcon[]>(() => {
+    const options: TOptionWithIcon[] = [];
+    if (editModal) {
+      options.push({
+        value: OPTION_EDIT,
+        label: 'Modifier',
+        icon: 'fr-icon-edit-line',
+      });
+    }
+    if (onDeleteConfirmed) {
+      options.push({
+        value: OPTION_DELETE,
+        label: 'Supprimer le module',
+        icon: 'fr-icon-delete-line',
+      });
+    }
+
+    return options;
+  }, [editModal, onDeleteConfirmed]);
+
+  const onSelectMenuOption = useCallback(
+    (value: string, close: () => void) => {
+      if (value === OPTION_DELETE) {
+        setConfirmDeleteClose(() => close);
+        return true;
+      } else if (value === OPTION_EDIT) {
+        setIsModalOpen(true);
+        onSettingsClick?.();
+      }
+    },
+    [onSettingsClick]
+  );
 
   if (isLoading) {
     return (
@@ -117,21 +166,46 @@ const Module = ({
 
   return (
     <ModuleContainer className={classNames('!border-grey-3', className)}>
-      <div className="flex items-start gap-20">
-        <h6 className="mb-0">{title}</h6>
+      {confirmDeleteClose !== null && (
+        <BottomAlertOkCancel
+          title="Confirmer la suppression du module"
+          btnOKProps={{
+            onClick: () => {
+              onDeleteConfirmed?.();
+              confirmDeleteClose?.();
+              setConfirmDeleteClose(null);
+            },
+          }}
+          btnCancelProps={{
+            onClick: () => {
+              confirmDeleteClose?.();
+              setConfirmDeleteClose(null);
+            },
+          }}
+        />
+      )}
+      <div className="flex justify-between gap-20">
+        <h6 className="mb-0">
+          {title}
+          <InfoTooltip
+            iconClassName="ml-2"
+            label={
+              <div className="max-w-sm">
+                Le total peut être inférieur à la somme des répartitions, car
+                certaines fiches action peuvent se trouver dans plusieurs
+                catégories à la fois.
+              </div>
+            }
+          />
+        </h6>
         <>
           {/** Bouton d'édition des filtres du module + modale */}
           {editModal && (
             <>
-              <Button
-                variant="grey"
-                icon="edit-line"
-                size="xs"
-                className="ml-auto"
-                onClick={() => {
-                  setIsModalOpen(true);
-                  onSettingsClick?.();
-                }}
+              <ThreeDotMenu
+                buttonClassname="bg-white"
+                options={moduleOptions}
+                onSelect={onSelectMenuOption}
               />
               {isModalOpen &&
                 editModal({ isOpen: isModalOpen, setIsOpen: setIsModalOpen })}

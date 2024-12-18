@@ -1,6 +1,7 @@
 // `index-domain.ts` file must only contain exports that are shareable with client-side apps.
 // Exports from this file can be imported with `@/domain/*` alias path.
 
+export * from './count-by/count-by-property-options.enum';
 export * from './shared/models/axe.table';
 export * from './shared/models/fiche-action-effet-attendu.table';
 export * from './shared/models/fiche-action-financeur-tag.table';

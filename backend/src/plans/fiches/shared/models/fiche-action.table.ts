@@ -167,7 +167,8 @@ export const ficheSchema = createSelectSchema(ficheActionTable, {
   // Overriding array types as a workaround for drizzle-zod parsing issue
   // See https://github.com/drizzle-team/drizzle-orm/issues/1609
   piliersEci: z.array(piliersEciEnumSchema),
-  cibles: z.array(ciblesEnumSchema),
+  cibles: z.array(ciblesEnumSchema).describe('Cibles'),
+  statut: (schema) => schema.statut.describe('Statut'),
 });
 
 export const ficheSchemaCreate = createInsertSchema(ficheActionTable, {

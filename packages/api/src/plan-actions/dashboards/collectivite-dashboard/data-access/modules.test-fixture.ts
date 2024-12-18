@@ -6,7 +6,7 @@ export const moduleNew: ModuleInsert = {
   id: crypto.randomUUID(),
   collectiviteId: 1,
   titre: 'Mon module personnalisé',
-  slug: 'suivi-plan-actions',
+  defaultKey: 'suivi-plan-actions',
   type: 'plan-action.list',
   options: {
     filtre: {

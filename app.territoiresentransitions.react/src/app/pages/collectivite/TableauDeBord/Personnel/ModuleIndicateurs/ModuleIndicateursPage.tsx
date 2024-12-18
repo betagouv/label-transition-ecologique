@@ -2,7 +2,7 @@ import { Button, TrackPageView, useEventTracker } from '@/ui';
 
 import {
   ModuleIndicateursSelect,
-  Slug,
+  PersonalDefaultModuleKeys,
 } from '@/api/plan-actions/dashboards/personal-dashboard/domain/module.schema';
 import IndicateursListe from '@/app/app/pages/collectivite/Indicateurs/lists/indicateurs-list';
 import { usePlanActionsCount } from '@/app/app/pages/collectivite/PlansActions/PlanAction/data/usePlanActionsCount';
@@ -17,14 +17,14 @@ import { useCollectiviteId } from '@/app/core-logic/hooks/params';
 
 type Props = {
   view: TDBViewParam;
-  slug: Slug;
+  defaultModuleKey: PersonalDefaultModuleKeys;
 };
 
-const ModuleIndicateursPage = ({ view, slug }: Props) => {
+const ModuleIndicateursPage = ({ view, defaultModuleKey }: Props) => {
   const collectiviteId = useCollectiviteId();
 
   const { data: module, isLoading: isModuleLoading } =
-    usePersonalModuleFetch(slug);
+    usePersonalModuleFetch(defaultModuleKey);
 
   const filtre = module?.options.filtre;
 
@@ -40,7 +40,7 @@ const ModuleIndicateursPage = ({ view, slug }: Props) => {
   return (
     <ModulePage view={view} title={module.titre}>
       <TrackPageView
-        pageName={`app/tdb/personnel/${slug}`}
+        pageName={`app/tdb/personnel/${defaultModuleKey}`}
         properties={{ collectivite_id: collectiviteId! }}
       />
       <IndicateursListe
@@ -69,7 +69,7 @@ const ModuleIndicateursPage = ({ view, slug }: Props) => {
               <ModalIndicateursSuiviPlan
                 openState={openState}
                 module={module as ModuleIndicateursSelect}
-                keysToInvalidate={[getQueryKey(slug)]}
+                keysToInvalidate={[getQueryKey(defaultModuleKey)]}
               />
             )}
           </>

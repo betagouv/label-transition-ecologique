@@ -5,9 +5,9 @@ import { TrpcRouter } from '@/backend/utils/trpc/trpc.router';
 import { inferProcedureInput } from '@trpc/server';
 import { statutsEnumValues } from '../shared/models/fiche-action.table';
 
-type Input = inferProcedureInput<AppRouter['plans']['fiches']['countByStatut']>;
+type Input = inferProcedureInput<AppRouter['plans']['fiches']['countBy']>;
 
-describe('CountByStatutRouter', () => {
+describe('CountByRouter', () => {
   let router: TrpcRouter;
   let yoloDodoUser: AuthenticatedUser;
 
@@ -21,14 +21,17 @@ describe('CountByStatutRouter', () => {
 
     const input: Input = {
       collectiviteId: 1,
+      countByProperty: 'statut',
       filter: {},
     };
 
-    const result = await caller.plans.fiches.countByStatut(input);
-    expect(result).toMatchObject({});
+    const result = await caller.plans.fiches.countBy(input);
+    expect(result).toMatchObject({
+      countByProperty: 'statut',
+    });
 
     for (const statut of statutsEnumValues) {
-      expect(result[statut]).toMatchObject({
+      expect(result.countByResult[statut]).toMatchObject({
         valeur: expect.any(String),
         count: expect.any(Number),
       });
@@ -40,13 +43,14 @@ describe('CountByStatutRouter', () => {
 
     const input: Input = {
       collectiviteId: 1,
+      countByProperty: 'statut',
       filter: {},
     };
 
     // `rejects` is necessary to handle exception in async function
     // See https://vitest.dev/api/expect.html#tothrowerror
-    await expect(() =>
-      caller.plans.fiches.countByStatut(input)
-    ).rejects.toThrowError(/not authenticated/i);
+    await expect(() => caller.plans.fiches.countBy(input)).rejects.toThrowError(
+      /not authenticated/i
+    );
   });
 });

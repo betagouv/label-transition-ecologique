@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { TrackPageView, useEventTracker } from '@/ui';
 
 import {
+  CollectiviteDefaultModuleKeys,
   ModulePlanActionListSelect,
-  Slug,
 } from '@/api/plan-actions/dashboards/collectivite-dashboard/domain/module.schema';
 import PlansActionListe from '@/app/app/pages/collectivite/PlansActions/PlanAction/list/PlansActionListe';
 import { useCollectiviteModuleFetch } from '@/app/app/pages/collectivite/TableauDeBord/Collectivite/useColectiviteModuleFetch';
@@ -14,15 +14,15 @@ import { TDBViewParam } from '@/app/app/paths';
 
 type Props = {
   view: TDBViewParam;
-  slug: Slug;
+  defaultModuleKey: CollectiviteDefaultModuleKeys;
 };
 
 /** Page du module suivi des plans d'action de la collectivité */
-const ModuleSuiviPlansActionPage = ({ view, slug }: Props) => {
+const ModuleSuiviPlansActionPage = ({ view, defaultModuleKey }: Props) => {
   const trackEvent = useEventTracker('app/tdb/collectivite/suivi-plan-actions');
 
   const { data: dataModule, isLoading: isModuleLoading } =
-    useCollectiviteModuleFetch(slug);
+    useCollectiviteModuleFetch(defaultModuleKey);
 
   const module = dataModule as ModulePlanActionListSelect;
 
@@ -35,7 +35,7 @@ const ModuleSuiviPlansActionPage = ({ view, slug }: Props) => {
   return (
     <ModulePage view={view} title={module.titre}>
       <TrackPageView
-        pageName={`app/tdb/collectivite/${slug}`}
+        pageName={`app/tdb/collectivite/${defaultModuleKey}`}
         properties={{ collectivite_id: module.collectiviteId }}
       />
       <PlansActionListe
@@ -59,7 +59,7 @@ const ModuleSuiviPlansActionPage = ({ view, slug }: Props) => {
         //       module={module}
         //       openState={openState}
         //       displaySettings={{ display, setDisplay }}
-        //       keysToInvalidate={[getQueryKey(slug)]}
+        //       keysToInvalidate={[getQueryKey(defaultModuleKey)]}
         //     />
         //   </>
         // ) : undefined}

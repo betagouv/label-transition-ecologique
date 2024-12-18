@@ -77,7 +77,7 @@ const ModuleIndicateurs = ({ view, module }: Props) => {
                   makeTableauBordModuleUrl({
                     collectiviteId: collectiviteId!,
                     view,
-                    module: module.slug,
+                    module: module.defaultKey,
                   })
                 )
               }

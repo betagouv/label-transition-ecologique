@@ -4,9 +4,34 @@ import { objectToSnake } from 'ts-case-convert';
 import {
   ModuleInsert,
   moduleCommonSchemaInsert,
-  moduleFicheActionCountByStatusSchema,
+  moduleFicheActionCountBySchema,
   modulePlanActionListSchema,
 } from '../domain/module.schema';
+
+export async function moduleDelete({
+  dbClient,
+  moduleId,
+}: {
+  dbClient: DBClient;
+  moduleId: string;
+}) {
+  try {
+    console.log(`moduleDelete with id ${moduleId}`);
+    const { error } = await dbClient
+      .from('tableau_de_bord_module')
+      .delete()
+      .eq('id', moduleId);
+
+    if (error) {
+      throw error;
+    }
+
+    return {};
+  } catch (error) {
+    console.error(error);
+    return { error };
+  }
+}
 
 type Props = {
   dbClient: DBClient;
@@ -16,15 +41,16 @@ type Props = {
 export async function modulesSave({ dbClient, module: unsafeModule }: Props) {
   const myModule = parseModule(unsafeModule);
 
+  const savedModule = objectToSnake(
+    myModule
+  ) as TablesInsert<'tableau_de_bord_module'>;
+  savedModule.options = myModule.options; // Keep options in camelCase A bit weird here but will be less weird in backend :D
   try {
     const { error } = await dbClient
       .from('tableau_de_bord_module')
-      .upsert(
-        objectToSnake(myModule) as TablesInsert<'tableau_de_bord_module'>,
-        {
-          onConflict: 'id',
-        }
-      )
+      .upsert(savedModule, {
+        onConflict: 'id',
+      })
       .eq('id', myModule.id);
 
     if (error) {
@@ -48,12 +74,12 @@ function parseModule(module: ModuleInsert) {
     };
   }
 
-  if (module.type === 'fiche-action.count-by-status') {
+  if (module.type === 'fiche-action.count-by') {
     return {
-      ...moduleFicheActionCountByStatusSchema.parse(module),
+      ...moduleFicheActionCountBySchema.parse(module),
       ...commonPart,
     };
   }
 
-  throw new Error('Invalid module type');
+  throw new Error(`Invalid module type ${module.type}`);
 }

@@ -1,7 +1,10 @@
 import { signIn, signOut } from '@/api/tests/auth';
 import { supabase } from '@/api/tests/supabase';
 import { beforeEach, expect, test } from 'vitest';
-import { defaultSlugsSchema } from '../domain/module.schema';
+import {
+  collectiviteDefaultModuleKeysSchema,
+  ModuleInsert,
+} from '../domain/module.schema';
 import { modulesFetch } from './modules.fetch';
 import { modulesSave } from './modules.save';
 import { moduleNew, resetModules } from './modules.test-fixture';
@@ -43,11 +46,12 @@ test("Renvoie les 2 modules par défaut si aucun n'a été précédemment enregi
 });
 
 test("Renvoie un module enregistré et l'autre par défaut", async () => {
-  const defaultSlug = defaultSlugsSchema.enum['suivi-plan-actions'];
+  const defaultKey =
+    collectiviteDefaultModuleKeysSchema.enum['suivi-plan-actions'];
 
-  const myModule = {
+  const myModule: ModuleInsert = {
     ...moduleNew,
-    slug: defaultSlug,
+    defaultKey: defaultKey,
   };
 
   await modulesSave({
@@ -63,7 +67,7 @@ test("Renvoie un module enregistré et l'autre par défaut", async () => {
     myModule,
     {
       type: 'fiche-action.count-by-status',
-      slug: expect.not.stringMatching(defaultSlug),
+      defaultKey: expect.not.stringMatching(defaultKey),
     },
   ]);
 });

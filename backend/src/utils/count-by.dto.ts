@@ -12,7 +12,17 @@ export const countByRecordSchema = z.record(
   countSyntheseValeurSchema
 );
 
+export type CountByRecordGeneralType = z.infer<typeof countByRecordSchema>;
+
 export type CountByRecordType<Value> = Record<
   string,
   { count: number; valeur: Value }
 >;
+
+export const countByResponseSchema = z.object({
+  countByProperty: z.string(),
+  total: z.number().int(), // Total count of records, can be inferior to the sum of counts in the result in case a record is counted multiple times
+  countByResult: countByRecordSchema,
+});
+
+export type CountByResponseType = z.infer<typeof countByResponseSchema>;

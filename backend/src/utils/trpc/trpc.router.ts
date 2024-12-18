@@ -1,5 +1,5 @@
 import { BulkEditRouter } from '@/backend/plans/fiches/bulk-edit/bulk-edit.router';
-import { CountByStatutRouter } from '@/backend/plans/fiches/count-by-statut/count-by-statut.router';
+import { CountByRouter } from '@/backend/plans/fiches/count-by/count-by.router';
 import { FicheActionEtapeRouter } from '@/backend/plans/fiches/fiche-action-etape/fiche-action-etape.router';
 import { INestApplication, Injectable, Logger } from '@nestjs/common';
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
@@ -22,7 +22,7 @@ export class TrpcRouter {
     private readonly trpc: TrpcService,
     private readonly supabase: SupabaseService,
     private readonly trajectoiresRouter: TrajectoiresRouter,
-    private readonly countByStatutRouter: CountByStatutRouter,
+    private readonly countByRouter: CountByRouter,
     private readonly getCategoriesByCollectiviteRouter: ListCategoriesRouter,
     private readonly personnes: PersonnesRouter,
     private readonly ficheActionEtapeRouter: FicheActionEtapeRouter,
@@ -41,7 +41,7 @@ export class TrpcRouter {
     },
     plans: {
       fiches: this.trpc.mergeRouters(
-        this.countByStatutRouter.router,
+        this.countByRouter.router,
         this.bulkEditRouter.router,
         this.ficheActionEtapeRouter.router
       ),

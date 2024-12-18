@@ -1,17 +1,18 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
-import { ModalFooterOKCancel } from './ModalFooterOKCancel';
+import BottomAlertOkCancel from './BottomAlertOkCancel';
 
-const meta: Meta<typeof ModalFooterOKCancel> = {
-  component: ModalFooterOKCancel,
+const meta: Meta<typeof BottomAlertOkCancel> = {
+  component: BottomAlertOkCancel,
 };
 
 export default meta;
 
-type Story = StoryObj<typeof ModalFooterOKCancel>;
+type Story = StoryObj<typeof BottomAlertOkCancel>;
 
 export const Valider: Story = {
   args: {
+    title: 'Confirmer la suppression ?',
     btnOKProps: {
       onClick: action('onOK'),
     },
@@ -20,6 +21,7 @@ export const Valider: Story = {
 
 export const AnnulerValider: Story = {
   args: {
+    title: 'Confirmer la suppression ?',
     btnOKProps: {
       onClick: action('onOK'),
     },
@@ -31,6 +33,7 @@ export const AnnulerValider: Story = {
 
 export const CustomLabels: Story = {
   args: {
+    title: 'Confirmer la suppression ?',
     btnOKProps: {
       children: 'OK',
       onClick: action('onOK'),

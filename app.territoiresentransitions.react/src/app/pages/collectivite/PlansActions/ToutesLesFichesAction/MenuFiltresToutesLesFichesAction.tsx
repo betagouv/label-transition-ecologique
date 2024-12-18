@@ -27,11 +27,16 @@ import {
 import { useRef } from 'react';
 
 type Props = {
+  title?: string;
   filters: Filtre;
   setFilters: (filters: Filtre) => void;
 };
 
-const MenuFiltresToutesLesFichesAction = ({ filters, setFilters }: Props) => {
+const MenuFiltresToutesLesFichesAction = ({
+  title,
+  filters,
+  setFilters,
+}: Props) => {
   const pilotes = getPilotesValues(filters);
   const referents = getReferentsValues(filters);
 
@@ -41,7 +46,7 @@ const MenuFiltresToutesLesFichesAction = ({ filters, setFilters }: Props) => {
   return (
     <div className="w-96 md:w-[48rem] p-4 lg:p-8">
       <FormSection
-        title="Nouveau filtre :"
+        title={title || 'Nouveau filtre :'}
         className="!grid-cols-1 md:!grid-cols-2 gap-x-8"
       >
         <div className="*:mb-4 first:!mb-0">

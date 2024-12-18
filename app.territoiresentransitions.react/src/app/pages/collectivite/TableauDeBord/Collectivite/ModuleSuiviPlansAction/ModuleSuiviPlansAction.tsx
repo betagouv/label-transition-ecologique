@@ -68,7 +68,7 @@ const ModuleSuiviPlansAction = ({ view, module }: Props) => {
                 makeTableauBordModuleUrl({
                   collectiviteId: module.collectiviteId,
                   view,
-                  module: module.slug,
+                  module: module.defaultKey,
                 })
               )
             }

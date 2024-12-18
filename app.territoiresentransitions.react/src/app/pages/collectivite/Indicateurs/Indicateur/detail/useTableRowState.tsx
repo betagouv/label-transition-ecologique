@@ -1,9 +1,10 @@
-import {ChangeEvent, useEffect, useState} from 'react';
-import {TIndicateurValeur} from '../../useIndicateurValeurs';
-import {TEditIndicateurValeurHandlers} from './useEditIndicateurValeur';
-import {SourceType} from '../../types';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { SourceType } from '../../types';
+import { TIndicateurValeur } from '../../useIndicateurValeurs';
+import { TEditIndicateurValeurHandlers } from './useEditIndicateurValeur';
 
 export const OPTION_DELETE = 'delete';
+export const OPTION_EDIT = 'edit';
 
 export type TUseTableRowStateArgs = {
   /** type de données */
@@ -40,7 +41,7 @@ export const useTableRowState = ({
   editHandlers,
   onValueSaved,
 }: TUseTableRowStateArgs) => {
-  const {editValeur, deleteValue} = editHandlers;
+  const { editValeur, deleteValue } = editHandlers;
 
   const initialState = getInitialState(row);
   const [state, setState] = useState<TState>(initialState);
@@ -69,9 +70,9 @@ export const useTableRowState = ({
     const value =
       key === 'valeur' ? e.target.value.replaceAll(' ', '') : e.target.value;
     if (key === 'annee' && value.length > 4) {
-      setState({...state, annee: value.slice(0, 4)});
+      setState({ ...state, annee: value.slice(0, 4) });
     } else {
-      setState({...state, [key]: value});
+      setState({ ...state, [key]: value });
     }
   };
 
@@ -99,9 +100,9 @@ export const useTableRowState = ({
       // mais pour une nouvelle ligne on vérifie d'abord si l'année est déjà
       // présente dans les valeurs existantes
       if (isNewRow && !dismissConfirm) {
-        const existingRow = values?.find(v => v.annee === annee);
+        const existingRow = values?.find((v) => v.annee === annee);
         if (existingRow && existingRow.valeur !== valeur) {
-          setState({...state, confirmAvantEcrasement: existingRow});
+          setState({ ...state, confirmAvantEcrasement: existingRow });
           return;
         }
       }
@@ -127,7 +128,7 @@ export const useTableRowState = ({
       if (typeof state.id !== 'number') {
         return;
       }
-      deleteValue({valeurId: state.id});
+      deleteValue({ valeurId: state.id });
     }
   };
 

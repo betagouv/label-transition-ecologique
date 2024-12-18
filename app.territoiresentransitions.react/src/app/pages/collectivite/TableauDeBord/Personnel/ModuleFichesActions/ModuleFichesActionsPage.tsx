@@ -1,6 +1,6 @@
 import {
   ModuleFicheActionsSelect,
-  Slug,
+  PersonalDefaultModuleKeys,
 } from '@/api/plan-actions/dashboards/personal-dashboard/domain/module.schema';
 import { Button, TrackPageView, useEventTracker } from '@/ui';
 
@@ -20,20 +20,20 @@ import { useCollectiviteId } from '@/app/core-logic/hooks/params';
 
 type Props = {
   view: TDBViewParam;
-  slug: Slug;
+  defaultModuleKey: PersonalDefaultModuleKeys;
   sortSettings?: SortFicheActionSettings;
 };
 
 /** Page d'un module du tableau de bord plans d'action */
-const ModuleFichesActionsPage = ({ view, slug, sortSettings }: Props) => {
+const ModuleFichesActionsPage = ({ view, defaultModuleKey, sortSettings }: Props) => {
   const collectiviteId = useCollectiviteId();
 
   const { data: module, isLoading: isModuleLoading } =
-    usePersonalModuleFetch(slug);
+    usePersonalModuleFetch(defaultModuleKey);
 
   const { count } = usePlanActionsCount();
 
-  const trackEvent = useEventTracker(`app/tdb/personnel/${slug}`);
+  const trackEvent = useEventTracker(`app/tdb/personnel/${defaultModuleKey}`);
 
   if (isModuleLoading || !module) {
     return null;
@@ -42,7 +42,7 @@ const ModuleFichesActionsPage = ({ view, slug, sortSettings }: Props) => {
   return (
     <ModulePage view={view} title={module.titre}>
       <TrackPageView
-        pageName={`app/tdb/personnel/${slug}`}
+        pageName={`app/tdb/personnel/${defaultModuleKey}`}
         properties={{ collectivite_id: collectiviteId! }}
       />
       <FichesActionListe
@@ -62,7 +62,7 @@ const ModuleFichesActionsPage = ({ view, slug, sortSettings }: Props) => {
               onClick={() => {
                 openState.setIsOpen(true);
                 trackEvent(
-                  (slug === 'actions-dont-je-suis-pilote'
+                  (defaultModuleKey === 'actions-dont-je-suis-pilote'
                     ? 'tdb_modifier_filtres_actions_pilotes'
                     : 'tdb_modifier_filtres_actions_modifiees') as never,
                   { collectivite_id: collectiviteId } as never
@@ -71,20 +71,20 @@ const ModuleFichesActionsPage = ({ view, slug, sortSettings }: Props) => {
             >
               Filtrer
             </Button>
-            {module.slug === 'actions-dont-je-suis-pilote' &&
+            {module.defaultKey === 'actions-dont-je-suis-pilote' &&
               openState.isOpen && (
                 <ModalActionsDontJeSuisLePilote
                   openState={openState}
                   module={module as ModuleFicheActionsSelect}
-                  keysToInvalidate={[getQueryKey(slug)]}
+                  keysToInvalidate={[getQueryKey(defaultModuleKey)]}
                 />
               )}
-            {module.slug === 'actions-recemment-modifiees' &&
+            {module.defaultKey === 'actions-recemment-modifiees' &&
               openState.isOpen && (
                 <ModalActionsRecemmentModifiees
                   openState={openState}
                   module={module as ModuleFicheActionsSelect}
-                  keysToInvalidate={[getQueryKey(slug)]}
+                  keysToInvalidate={[getQueryKey(defaultModuleKey)]}
                 />
               )}
           </>

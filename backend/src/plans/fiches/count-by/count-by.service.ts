@@ -4,11 +4,14 @@ import {
   ficheActionServiceTagTable,
   ficheActionTable,
   SANS_STATUT_FICHE_ACTION_SYNTHESE_KEY,
-  statutsEnumValues,
 } from '@/backend/plans/fiches';
 import { GetFichesActionFilterRequestType } from '@/backend/plans/fiches/shared/fetch-fiches-filter.request';
 import { DatabaseService } from '@/backend/utils';
-import { CountByRecordType } from '@/backend/utils/count-by.dto';
+import {
+  CountByRecordGeneralType,
+  CountByRecordType,
+  CountByResponseType,
+} from '@/backend/utils/count-by.dto';
 import { getModifiedSinceDate } from '@/backend/utils/modified-since.enum';
 import { Injectable, Logger } from '@nestjs/common';
 import {
@@ -26,10 +29,12 @@ import {
 import { PgColumn } from 'drizzle-orm/pg-core';
 import { ficheActionAxeTable } from '../shared/models/fiche-action-axe.table';
 import { ficheActionPiloteTable } from '../shared/models/fiche-action-pilote.table';
+import { FicheActionWithRelationsType } from '../shared/models/fiche-action-with-relations.dto';
+import { CountByPropertyEnumType } from './count-by-property-options.enum';
 
 @Injectable()
-export class CountByStatutService {
-  private readonly logger = new Logger(CountByStatutService.name);
+export class CountByService {
+  private readonly logger = new Logger(CountByService.name);
 
   private readonly FICHE_ACTION_PARTENAIRE_TAGS_QUERY_ALIAS =
     'ficheActionPartenaireTags';
@@ -38,37 +43,82 @@ export class CountByStatutService {
 
   constructor(private readonly databaseService: DatabaseService) {}
 
-  async countByStatut(
+  getNullValue(countByProperty: CountByPropertyEnumType) {
+    switch (countByProperty) {
+      case 'statut':
+        return SANS_STATUT_FICHE_ACTION_SYNTHESE_KEY;
+      default:
+        return 'null';
+    }
+  }
+
+  fillCountByMapWithFiche(
+    fiche: FicheActionWithRelationsType,
+    countByProperty: CountByPropertyEnumType,
+    countByMap: CountByRecordGeneralType
+  ) {
+    const nullValue = this.getNullValue(countByProperty);
+    if (countByProperty === 'statut') {
+      const valueKey = fiche[countByProperty] || nullValue;
+      if (!countByMap[valueKey]) {
+        countByMap[valueKey] = {
+          valeur: valueKey,
+          count: 0,
+        };
+      }
+      countByMap[valueKey].count++;
+    }
+  }
+
+  async countByProperty(
     collectiviteId: number,
+    countByProperty: CountByPropertyEnumType,
     filter: GetFichesActionFilterRequestType
   ) {
     this.logger.log(
-      `Récupération de la synthese des fiches action pour la collectivité ${collectiviteId}: filtre ${JSON.stringify(
+      `Calcul du count by ${countByProperty} des fiches action pour la collectivité ${collectiviteId}: filtre ${JSON.stringify(
         filter
       )}`
     );
 
-    const listeValeurs = statutsEnumValues;
-    const conditions = this.getConditions(collectiviteId, filter);
+    // Fiches are limited in number, it's easier to count using typescript code rather than SQL
+    const fiches = await this.getFichesAction(collectiviteId, filter);
 
+    const countByResponse: CountByResponseType = {
+      countByProperty,
+      total: fiches.length,
+      countByResult: {},
+    };
+
+    fiches.forEach((fiche) => {
+      this.fillCountByMapWithFiche(
+        fiche,
+        countByProperty,
+        countByResponse.countByResult
+      );
+    });
+
+    /*
+    const countByResult: CountByRecordType<Value> = {};
     const result = await this.countBy(
       ficheActionTable.statut,
       conditions,
       listeValeurs,
       SANS_STATUT_FICHE_ACTION_SYNTHESE_KEY
-    );
+    );*/
 
-    return result;
+    return countByResponse;
   }
 
   private getFicheActionPartenaireTagsQuery() {
     return this.databaseService.db
       .select({
         fiche_id: ficheActionPartenaireTagTable.ficheId,
-        partenaire_tag_ids:
-          sql`array_agg(${ficheActionPartenaireTagTable.partenaireTagId})`.as(
-            this.FICHE_ACTION_PARTENAIRE_TAGS_QUERY_FIELD
-          ),
+        partenaire_tag_ids: sql<
+          number[]
+        >`array_agg(${ficheActionPartenaireTagTable.partenaireTagId})`.as(
+          this.FICHE_ACTION_PARTENAIRE_TAGS_QUERY_FIELD
+        ),
       })
       .from(ficheActionPartenaireTagTable)
       .groupBy(ficheActionPartenaireTagTable.ficheId)
@@ -79,8 +129,10 @@ export class CountByStatutService {
     return this.databaseService.db
       .select({
         fiche_id: ficheActionAxeTable.ficheId,
-        axe_ids: sql`array_agg(${ficheActionAxeTable.axeId})`.as('axe_ids'),
-        plan_ids: sql`array_agg(${axeTable.plan})`.as('plan_ids'),
+        axe_ids: sql<number[]>`array_agg(${ficheActionAxeTable.axeId})`.as(
+          'axe_ids'
+        ),
+        plan_ids: sql<number[]>`array_agg(${axeTable.plan})`.as('plan_ids'),
       })
       .from(ficheActionAxeTable)
       .leftJoin(axeTable, eq(axeTable.id, ficheActionAxeTable.axeId))
@@ -92,10 +144,11 @@ export class CountByStatutService {
     return this.databaseService.db
       .select({
         fiche_id: ficheActionServiceTagTable.ficheId,
-        service_tag_ids:
-          sql`array_agg(${ficheActionServiceTagTable.serviceTagId})`.as(
-            'service_tag_ids'
-          ),
+        service_tag_ids: sql<
+          number[]
+        >`array_agg(${ficheActionServiceTagTable.serviceTagId})`.as(
+          'service_tag_ids'
+        ),
       })
       .from(ficheActionServiceTagTable)
       .groupBy(ficheActionServiceTagTable.ficheId)
@@ -106,14 +159,16 @@ export class CountByStatutService {
     return this.databaseService.db
       .select({
         fiche_id: ficheActionPiloteTable.ficheId,
-        pilote_user_ids:
-          sql`array_remove(array_agg(${ficheActionPiloteTable.userId}), NULL)`.as(
-            'pilote_user_ids'
-          ),
-        pilote_tag_ids:
-          sql`array_remove(array_agg(${ficheActionPiloteTable.tagId}), NULL)`.as(
-            'pilote_tag_ids'
-          ),
+        pilote_user_ids: sql<
+          number[]
+        >`array_remove(array_agg(${ficheActionPiloteTable.userId}), NULL)`.as(
+          'pilote_user_ids'
+        ),
+        pilote_tag_ids: sql<
+          number[]
+        >`array_remove(array_agg(${ficheActionPiloteTable.tagId}), NULL)`.as(
+          'pilote_tag_ids'
+        ),
       })
       .from(ficheActionPiloteTable)
       .groupBy(ficheActionPiloteTable.ficheId)
@@ -123,7 +178,7 @@ export class CountByStatutService {
   async getFichesAction(
     collectiviteId: number,
     filter: GetFichesActionFilterRequestType
-  ) {
+  ): Promise<FicheActionWithRelationsType[]> {
     this.logger.log(
       `Récupération des fiches action pour la collectivité ${collectiviteId}: filtre ${JSON.stringify(
         filter
@@ -140,12 +195,12 @@ export class CountByStatutService {
     const fichesActionQuery = this.databaseService.db
       .select({
         ...getTableColumns(ficheActionTable),
-        partenaire_tag_ids: ficheActionPartenaireTags.partenaire_tag_ids,
-        pilote_tag_ids: ficheActionPilotes.pilote_tag_ids,
-        pilote_user_ids: ficheActionPilotes.pilote_user_ids,
-        service_tag_ids: ficheActionServiceTags.service_tag_ids,
-        axe_ids: ficheActionAxes.axe_ids,
-        plan_ids: ficheActionAxes.plan_ids,
+        partenaireTagIds: ficheActionPartenaireTags.partenaire_tag_ids,
+        piloteTagIds: ficheActionPilotes.pilote_tag_ids,
+        piloteUserIds: ficheActionPilotes.pilote_user_ids,
+        serviceTagIds: ficheActionServiceTags.service_tag_ids,
+        axeIds: ficheActionAxes.axe_ids,
+        planIds: ficheActionAxes.plan_ids,
       })
       .from(ficheActionTable)
       .leftJoin(
