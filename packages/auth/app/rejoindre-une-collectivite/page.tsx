@@ -4,7 +4,7 @@ import { getAuthPaths, restoreSessionFromAuthTokens } from '@/api';
 import { useRejoindreUneCollectivite } from '@/auth/app/rejoindre-une-collectivite/useRejoindreUneCollectivite';
 import { RejoindreUneCollectiviteModal } from '@/auth/components/RejoindreUneCollectivite';
 import { supabase } from '@/auth/src/clientAPI';
-import { useEffect } from 'react';
+import { use, useEffect } from 'react';
 
 /**
  * Affiche la page "rejoindre une collectivité"
@@ -12,15 +12,22 @@ import { useEffect } from 'react';
  * Après le rattachement à la collectivité (ou l'annulation), l'utilisateur est redirigé sur la page associée à l'url contenu dans le param. `redirect_to`
  */
 const RejoindreUneCollectivitePage = ({
-  searchParams: { view = null, email = null, otp = null, redirect_to = '/' },
+  searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     view: string | null;
     email: string | null;
     otp: string | null;
     redirect_to: string;
-  };
+  }>;
 }) => {
+  const {
+    view = null,
+    email = null,
+    otp = null,
+    redirect_to = '/',
+  } = use(searchParams);
+
   const state = useRejoindreUneCollectivite({ redirectTo: redirect_to });
 
   // redirige sur la page de login si l'utilisateur n'est pas  connecté

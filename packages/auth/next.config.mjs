@@ -14,10 +14,6 @@ const nextConfig = {
     tsconfigPath: './tsconfig.json',
   },
 
-  // active le mode strict pour détecter les problèmes en dev
-  reactStrictMode: true,
-  // active la minification
-  swcMinify: true,
   experimental: {
     // permet le chargement de nivo
     esmExternals: 'loose',

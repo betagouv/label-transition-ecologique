@@ -14,10 +14,6 @@ const nextConfig = {
   // See https://nextjs.org/docs/app/api-reference/next-config-js/output#automatically-copying-traced-files
   output: 'standalone',
 
-  // active le mode strict pour détecter les problèmes en dev
-  reactStrictMode: true,
-  // active la minification
-  swcMinify: true,
   experimental: {
     // permet le chargement de nivo
     esmExternals: 'loose',

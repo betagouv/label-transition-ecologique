@@ -1,8 +1,8 @@
-import { composePlugins, withNx } from '@nx/next';
 import nextMDX from '@next/mdx';
-import rehypeToc from 'rehype-toc';
-import rehypeSlug from 'rehype-slug';
+import { composePlugins, withNx } from '@nx/next';
 import rehypeExternalLinks from 'rehype-external-links';
+import rehypeSlug from 'rehype-slug';
+import rehypeToc from 'rehype-toc';
 
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
@@ -18,10 +18,6 @@ const nextConfig = {
   // See https://nextjs.org/docs/app/api-reference/next-config-js/output#automatically-copying-traced-files
   output: 'standalone',
 
-  // active le mode strict pour détecter le problèmes en dev
-  reactStrictMode: true,
-  // active la minification
-  swcMinify: true,
   experimental: {
     // permet le chargement de nivo
     esmExternals: 'loose',
