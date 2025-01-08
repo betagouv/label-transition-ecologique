@@ -57,7 +57,34 @@ export const IndicateurValuesTabs = ({
   }, [avecObjectifs, avecResultats, activeTab]);
 
   return (
-    <>
+    <div className="flex flex-col gap-2">
+      <Tabs defaultActiveTab={activeTab} onChange={onChangeTab}>
+        {avecResultats ? (
+          <Tab label="Résultats" icon="checkbox">
+            <IndicateurValuesTable
+              definition={definition}
+              type="resultat"
+              valeurs={resultats}
+              valeursBrutes={valeursBrutes!}
+              isReadonly={isReadonly}
+              importSource={importSource}
+              confidentiel={confidentiel}
+            />
+          </Tab>
+        ) : null}
+        {avecObjectifs ? (
+          <Tab label="Objectifs" icon="calendar-2">
+            <IndicateurValuesTable
+              definition={definition}
+              type="objectif"
+              valeurs={objectifs}
+              valeursBrutes={valeursBrutes!}
+              isReadonly={isReadonly}
+            />
+          </Tab>
+        ) : null}
+      </Tabs>
+
       {!isReadonly && (
         <>
           <div className="flex my-10">
@@ -92,32 +119,6 @@ export const IndicateurValuesTabs = ({
           )}
         </>
       )}
-      <Tabs defaultActiveTab={activeTab} onChange={onChangeTab}>
-        {avecResultats ? (
-          <Tab label="Résultats" icon="checkbox">
-            <IndicateurValuesTable
-              definition={definition}
-              type="resultat"
-              valeurs={resultats}
-              valeursBrutes={valeursBrutes!}
-              isReadonly={isReadonly}
-              importSource={importSource}
-              confidentiel={confidentiel}
-            />
-          </Tab>
-        ) : null}
-        {avecObjectifs ? (
-          <Tab label="Objectifs" icon="calendar-2">
-            <IndicateurValuesTable
-              definition={definition}
-              type="objectif"
-              valeurs={objectifs}
-              valeursBrutes={valeursBrutes!}
-              isReadonly={isReadonly}
-            />
-          </Tab>
-        ) : null}
-      </Tabs>
-    </>
+    </div>
   );
 };
