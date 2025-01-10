@@ -1,4 +1,4 @@
-import { useActionDownToTache } from '@/app/core-logic/hooks/referentiel';
+import { useActionDownToTache } from '@/app/referentiels/referentiel-hooks';
 import { Referentiel } from '@/app/types/litterals';
 import { lazy } from '@/app/utils/lazy';
 import { renderLoader } from '@/app/utils/renderLoader';

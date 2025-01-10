@@ -4,7 +4,7 @@ import {
 } from '@/app/app/pages/collectivite/EtatDesLieux/Accueil/EtatDesLieux/labellisation/Star';
 import { toLocaleFixed } from '@/app/utils/toFixed';
 import { Tooltip } from '@/ui';
-import ScoreDisplay from '../../../../../../../ui/referentiels/ScoreDisplay';
+import ScoreDisplay from '../../../../../../../referentiels/ui/ScoreDisplay';
 import { TLabellisationParcours } from '../../../../ParcoursLabellisation/types';
 
 export const NIVEAUX = [1, 2, 3, 4, 5];

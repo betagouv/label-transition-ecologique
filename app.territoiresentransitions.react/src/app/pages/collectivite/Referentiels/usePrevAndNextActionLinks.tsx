@@ -6,7 +6,7 @@ import {
   useCollectiviteId,
   useReferentielId,
 } from '@/app/core-logic/hooks/params';
-import { useReferentielDownToAction } from '@/app/core-logic/hooks/referentiel';
+import { useReferentielDownToAction } from '@/app/referentiels/referentiel-hooks';
 
 /**
  * Génération des liens "Action précédente" et "Action suivante"

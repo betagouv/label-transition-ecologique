@@ -1,4 +1,4 @@
-import { useEditActionStatutIsDisabled } from '@/app/core-logic/hooks/useActionStatut';
+import { useEditActionStatutIsDisabled } from '@/app/referentiels/use-action-statut';
 import {
   DEFAULT_ITEMS,
   SelectActionStatut,

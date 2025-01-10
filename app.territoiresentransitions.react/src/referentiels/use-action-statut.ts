@@ -6,9 +6,9 @@ import {
 import { supabaseClient } from '@/app/core-logic/api/supabase';
 import { TActionAvancement } from '@/app/types/alias';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useCollectiviteId } from './params';
-import { useActionScore } from './scoreHooks';
-import { useCurrentCollectivite } from './useCurrentCollectivite';
+import { useCollectiviteId } from '../core-logic/hooks/params';
+import { useCurrentCollectivite } from '../core-logic/hooks/useCurrentCollectivite';
+import { useActionScore } from './score-hooks';
 
 /**
  * Charge le statut d'une action

@@ -1,9 +1,9 @@
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
+import { useCurrentCollectivite } from '@/app/core-logic/hooks/useCurrentCollectivite';
 import {
   useActionCommentaire,
   useSaveActionCommentaire,
-} from '@/app/core-logic/hooks/useActionCommentaire';
-import { useCurrentCollectivite } from '@/app/core-logic/hooks/useCurrentCollectivite';
+} from '@/app/referentiels/use-action-commentaire';
 import Textarea from '@/app/ui/shared/form/Textarea';
 import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';

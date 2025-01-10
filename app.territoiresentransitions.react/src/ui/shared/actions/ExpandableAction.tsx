@@ -1,8 +1,8 @@
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
-import { useActionSummaryChildren } from '@/app/core-logic/hooks/referentiel';
-import ActionProgressBar from '@/app/ui/referentiels/ActionProgressBar';
-import { ActionReferentielDisplayTitle } from '@/app/ui/referentiels/ActionReferentielDisplayTitle';
-import { ActionReferentielLinkCard } from '@/app/ui/referentiels/ActionReferentielLinkCard';
+import { useActionSummaryChildren } from '@/app/referentiels/referentiel-hooks';
+import ActionProgressBar from '@/app/referentiels/ui/ActionProgressBar';
+import { ActionReferentielDisplayTitle } from '@/app/referentiels/ui/ActionReferentielDisplayTitle';
+import { ActionReferentielLinkCard } from '@/app/referentiels/ui/ActionReferentielLinkCard';
 import classNames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 

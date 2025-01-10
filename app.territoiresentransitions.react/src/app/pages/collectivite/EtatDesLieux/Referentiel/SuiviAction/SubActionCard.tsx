@@ -1,8 +1,8 @@
 import ActionJustification from '@/app/app/pages/collectivite/EtatDesLieux/Referentiel/SuiviAction/ActionJustification';
 import { TCycleLabellisationStatus } from '@/app/app/pages/collectivite/ParcoursLabellisation/useCycleLabellisation';
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
-import { useActionSummaryChildren } from '@/app/core-logic/hooks/referentiel';
-import { useActionStatut } from '@/app/core-logic/hooks/useActionStatut';
+import { useActionSummaryChildren } from '@/app/referentiels/referentiel-hooks';
+import { useActionStatut } from '@/app/referentiels/use-action-statut';
 import { Accordion } from '@/app/ui/Accordion';
 import { ActionCommentaire } from '@/app/ui/shared/actions/ActionCommentaire';
 import { useEffect, useRef, useState } from 'react';

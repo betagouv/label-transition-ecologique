@@ -1,6 +1,6 @@
 import { getScoreRealiseQueryKey } from '@/app/app/pages/collectivite/EtatDesLieux/Referentiel/data/useScoreRealise';
 import { supabaseClient } from '@/app/core-logic/api/supabase';
-import { getScoreQueryKey } from '@/app/core-logic/hooks/scoreHooks';
+import { getScoreQueryKey } from '@/app/referentiels/score-hooks';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { createContext, ReactNode, useContext, useRef } from 'react';
 import { useQueryClient } from 'react-query';

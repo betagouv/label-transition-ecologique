@@ -1,5 +1,5 @@
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
-import { useActionScore } from '@/app/core-logic/hooks/scoreHooks';
+import { useActionScore } from '@/app/referentiels/score-hooks';
 import { ActionType } from '@/app/types/action_referentiel';
 
 export interface PillParams {

@@ -1,7 +1,7 @@
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
-import ActionProgressBar from '@/app/ui/referentiels/ActionProgressBar';
+import ActionProgressBar from '@/app/referentiels/ui/ActionProgressBar';
 import classNames from 'classnames';
-import ScoreDisplay from '../../../../ui/referentiels/ScoreDisplay';
+import ScoreDisplay from '../../../../referentiels/ui/ScoreDisplay';
 import HeaderFixed from '../CollectivitePageLayout/HeaderFixed';
 import { SuiviScoreRow } from '../EtatDesLieux/Referentiel/data/useScoreRealise';
 import { PersoPotentiel } from '../PersoPotentielModal/PersoPotentiel';

@@ -1,8 +1,7 @@
-import React from 'react';
-import {Meta} from '@storybook/react';
+import { Meta } from '@storybook/react';
+import { avancementToLabel } from '../../../app/labels';
+import { actionAvancementColors } from '../../../app/theme';
 import ProgressBar from './ProgressBar';
-import {avancementToLabel} from '../../app/labels';
-import {actionAvancementColors} from '../../app/theme';
 
 export default {
   component: ProgressBar,

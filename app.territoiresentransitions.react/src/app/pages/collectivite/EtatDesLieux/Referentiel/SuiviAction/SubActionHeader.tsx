@@ -1,13 +1,13 @@
 import ActionJustification from '@/app/app/pages/collectivite/EtatDesLieux/Referentiel/SuiviAction/ActionJustification';
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
-import { TActionAvancement } from '@/app/types/alias';
-import { ExpandToggle } from '@/app/ui/icons/ExpandToggle';
-import ActionProgressBar from '@/app/ui/referentiels/ActionProgressBar';
+import ActionProgressBar from '@/app/referentiels/ui/ActionProgressBar';
 import {
   ActionStatusDropdown,
   StatusToSavePayload,
-} from '@/app/ui/referentiels/ActionStatusDropdown';
-import ScoreDisplay from '@/app/ui/referentiels/ScoreDisplay';
+} from '@/app/referentiels/ui/ActionStatusDropdown';
+import ScoreDisplay from '@/app/referentiels/ui/ScoreDisplay';
+import { TActionAvancement } from '@/app/types/alias';
+import { ExpandToggle } from '@/app/ui/icons/ExpandToggle';
 import { ActionCommentaire } from '@/app/ui/shared/actions/ActionCommentaire';
 import { InfoTooltip } from '@/ui';
 import classNames from 'classnames';

@@ -4,7 +4,7 @@ import { ActionScore } from '@/app/types/ClientScore';
 import { Referentiel } from '@/app/types/litterals';
 import { referentielId } from '@/app/utils/actions';
 import { useQuery } from 'react-query';
-import { useScoreListener } from './useScoreListener';
+import { useScoreListener } from './use-score-listener';
 
 export type ReferentielsActionScores = {
   eci: ActionScore[];

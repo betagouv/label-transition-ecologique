@@ -2,14 +2,14 @@ import { avancementToLabel } from '@/app/app/labels';
 import { SuiviScoreRow } from '@/app/app/pages/collectivite/EtatDesLieux/Referentiel/data/useScoreRealise';
 import { actionAvancementColors } from '@/app/app/theme';
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
+import { useCurrentCollectivite } from '@/app/core-logic/hooks/useCurrentCollectivite';
+import ProgressBarWithTooltip from '@/app/referentiels/ui/score.progress-bar/ProgressBarWithTooltip';
 import {
   useActionStatut,
   useEditActionStatutIsDisabled,
   useSaveActionStatut,
-} from '@/app/core-logic/hooks/useActionStatut';
-import { useCurrentCollectivite } from '@/app/core-logic/hooks/useCurrentCollectivite';
+} from '@/app/referentiels/use-action-statut';
 import { TActionAvancement, TActionAvancementExt } from '@/app/types/alias';
-import ProgressBarWithTooltip from '@/app/ui/score/ProgressBarWithTooltip';
 import {
   ITEMS_AVEC_NON_CONCERNE,
   SelectActionStatut,
@@ -17,14 +17,14 @@ import {
 import { Button, Tooltip } from '@/ui';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
-import ActionProgressBar from './ActionProgressBar';
-import ScoreAutoModal from './ScoreAutoModal';
-import ScoreDetailleModal from './ScoreDetailleModal/ScoreDetailleModal';
 import {
   getAvancementExt,
   getStatusFromIndex,
   statutParAvancement,
-} from './utils';
+} from '../utils';
+import ActionProgressBar from './ActionProgressBar';
+import ScoreDetailleModal from './detailed-score/ScoreDetailleModal';
+import ScoreAutoModal from './ScoreAutoModal';
 
 export type StatusToSavePayload = {
   actionId: string;
@@ -274,7 +274,6 @@ export const ActionStatusDropdown = ({
           />
         </div>
       </Tooltip>
-
       {/* Cas particulier des statuts "détaillé" */}
       {localAvancement === 'detaille' && !score?.desactive && (
         <div className="flex flex-col gap-3 items-end w-full pr-1">
@@ -319,7 +318,6 @@ export const ActionStatusDropdown = ({
           )}
         </div>
       )}
-
       {/* Modale de score auto / par tâche (pour les sous-actions) */}
       {openScoreAuto && (
         <ScoreAutoModal
@@ -331,7 +329,6 @@ export const ActionStatusDropdown = ({
           onOpenScorePerso={() => setOpenScorePerso(true)}
         />
       )}
-
       {/* Modale de personnalisation du score (avec jauge manuelle) */}
       {(openScoreDetaille || openScorePerso) && (
         <ScoreDetailleModal

@@ -1,8 +1,8 @@
 import { SuiviScoreRow } from '@/app/app/pages/collectivite/EtatDesLieux/Referentiel/data/useScoreRealise';
 import SubActionTasksList from '@/app/app/pages/collectivite/EtatDesLieux/Referentiel/SuiviAction/SubActionTasksList';
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
-import { useActionSummaryChildren } from '@/app/core-logic/hooks/referentiel';
-import { useTasksStatus } from '@/app/core-logic/hooks/useActionStatut';
+import { useActionSummaryChildren } from '@/app/referentiels/referentiel-hooks';
+import { useTasksStatus } from '@/app/referentiels/use-action-statut';
 import { TActionAvancement } from '@/app/types/alias';
 import Modal from '@/app/ui/shared/floating-ui/Modal';
 import { Alert } from '@/ui';
@@ -90,7 +90,7 @@ const ScoreAutoModal = ({
   };
 
   const handleSaveScoreAuto = () => {
-    let newStatus = [];
+    const newStatus = [];
 
     for (const actionId in localStatus) {
       newStatus.push({

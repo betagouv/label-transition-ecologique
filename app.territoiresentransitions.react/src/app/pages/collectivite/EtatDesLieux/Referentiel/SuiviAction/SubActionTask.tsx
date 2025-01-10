@@ -1,6 +1,6 @@
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
-import { useActionCommentaire } from '@/app/core-logic/hooks/useActionCommentaire';
-import { StatusToSavePayload } from '@/app/ui/referentiels/ActionStatusDropdown';
+import { StatusToSavePayload } from '@/app/referentiels/ui/ActionStatusDropdown';
+import { useActionCommentaire } from '@/app/referentiels/use-action-commentaire';
 import { ActionCommentaire } from '@/app/ui/shared/actions/ActionCommentaire';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
