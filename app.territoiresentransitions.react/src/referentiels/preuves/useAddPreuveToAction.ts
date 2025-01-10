@@ -1,10 +1,10 @@
 import { useCollectiviteId } from '@/app/core-logic/hooks/params';
-import { TAddFileFromLib } from '@/app/ui/shared/preuves/AddPreuveModal/AddFile';
-import { TAddLink } from '@/app/ui/shared/preuves/AddPreuveModal/AddLink';
 import {
   useAddPreuveComplementaire,
   useAddPreuveReglementaire,
-} from '@/app/ui/shared/preuves/Bibliotheque/useAddPreuves';
+} from '@/app/referentiels/preuves/useAddPreuves';
+import { TAddFileFromLib } from '@/app/ui/shared/preuves/AddPreuveModal/AddFile';
+import { TAddLink } from '@/app/ui/shared/preuves/AddPreuveModal/AddLink';
 
 type THandlers = {
   /** ajoute un fichier sélectionné depuis la bibliothèque */

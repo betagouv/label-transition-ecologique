@@ -8,27 +8,27 @@ import {
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
 import { useActionVue, useReferentielId } from '@/app/core-logic/hooks/params';
 import { useCurrentCollectivite } from '@/app/core-logic/hooks/useCurrentCollectivite';
+import ActionPreuvePanel from '@/app/referentiels/actions/action-preuve.panel';
+import { useActionPreuvesCount } from '@/app/referentiels/preuves/usePreuves';
 import ScrollTopButton from '@/app/ui/buttons/ScrollTopButton';
-import ActionPreuvePanel from '@/app/ui/shared/actions/ActionPreuvePanel/ActionPreuvePanel';
-import { useActionPreuvesCount } from '@/app/ui/shared/preuves/Bibliotheque/usePreuves';
 import { Tab, Tabs } from '@/app/ui/shared/Tabs';
 import { addTargetToContentAnchors } from '@/app/utils/content';
 import { Alert } from '@/ui';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ActionAuditDetail } from '../Audit/ActionAuditDetail';
-import ActionAuditStatut from '../Audit/ActionAuditStatut';
-import { useShowDescIntoInfoPanel } from '../Audit/useAudit';
-import { useScoreRealise } from '../EtatDesLieux/Referentiel/data/useScoreRealise';
-import ActionFollowUp from '../EtatDesLieux/Referentiel/SuiviAction/ActionFollowUp';
-import { useFilteredIndicateurDefinitions } from '../Indicateurs/lists/useFilteredIndicateurDefinitions';
-import { useCycleLabellisation } from '../ParcoursLabellisation/useCycleLabellisation';
-import { ActionHeader } from './ActionHeader';
-import { ActionBottomNav } from './ActionNav';
-import { DownloadDocs } from './DownloadDocs';
-import { FichesActionLiees } from './FichesActionLiees';
-import IndicateurChartsGrid from './IndicateurChartsGrid';
-import { usePrevAndNextActionLinks } from './usePrevAndNextActionLinks';
+import { ActionAuditDetail } from '../../app/pages/collectivite/Audit/ActionAuditDetail';
+import ActionAuditStatut from '../../app/pages/collectivite/Audit/ActionAuditStatut';
+import { useShowDescIntoInfoPanel } from '../../app/pages/collectivite/Audit/useAudit';
+import { useScoreRealise } from '../../app/pages/collectivite/EtatDesLieux/Referentiel/data/useScoreRealise';
+import ActionFollowUp from '../../app/pages/collectivite/EtatDesLieux/Referentiel/SuiviAction/ActionFollowUp';
+import { useFilteredIndicateurDefinitions } from '../../app/pages/collectivite/Indicateurs/lists/useFilteredIndicateurDefinitions';
+import { useCycleLabellisation } from '../../app/pages/collectivite/ParcoursLabellisation/useCycleLabellisation';
+import { DownloadDocs } from '../../app/pages/collectivite/Referentiels/DownloadDocs';
+import { FichesActionLiees } from '../../app/pages/collectivite/Referentiels/FichesActionLiees';
+import IndicateurChartsGrid from '../../app/pages/collectivite/Referentiels/IndicateurChartsGrid';
+import { usePrevAndNextActionLinks } from '../../app/pages/collectivite/Referentiels/usePrevAndNextActionLinks';
+import { ActionHeader } from './action.header';
+import { ActionBottomNav } from './action.nav';
 
 // index des onglets de la page Action
 const TABS_INDEX: Record<ActionVueParamOption, number> = {

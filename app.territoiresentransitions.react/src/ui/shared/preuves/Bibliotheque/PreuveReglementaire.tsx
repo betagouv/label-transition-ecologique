@@ -1,4 +1,4 @@
-import { AddPreuveReglementaire } from '@/app/ui/shared/actions/AddPreuve/AddPreuveReglementaire';
+import { AddPreuveReglementaire } from '@/app/referentiels/preuves/AddPreuveReglementaire';
 import { InfoTooltip } from '@/ui';
 import DOMPurify from 'dompurify';
 import { IdentifiantAction, isDisabledAction } from './IdentifiantAction';

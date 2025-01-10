@@ -4,8 +4,8 @@ import {
   useEditState,
 } from '@/app/core-logic/hooks/useEditState';
 import { useMutation } from 'react-query';
+import { useRefetchPreuves } from '../../../../referentiels/preuves/useAddPreuves';
 import { TEditHandlers, TPreuve } from './types';
-import { useRefetchPreuves } from './useAddPreuves';
 
 type TEditPreuve = (preuve: TPreuve) => TEditHandlers;
 

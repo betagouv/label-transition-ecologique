@@ -1,5 +1,5 @@
+import { referentielId } from '@/app/referentiels/actions.utils';
 import { useScores } from '@/app/referentiels/score-hooks';
-import { referentielId } from '@/app/utils/actions';
 
 export const useTasksScoreRepartition = (actionId: string) => {
   const scores = useScores();

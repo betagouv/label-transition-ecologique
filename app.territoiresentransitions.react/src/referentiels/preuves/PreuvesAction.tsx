@@ -1,7 +1,10 @@
-import { AddPreuveComplementaire } from '@/app/ui/shared/actions/AddPreuve/AddPreuveComplementaire';
-import PreuveDoc from './PreuveDoc';
-import { PreuveReglementaire } from './PreuveReglementaire';
-import { TPreuveComplementaire, TPreuveReglementaire } from './types';
+import { AddPreuveComplementaire } from '@/app/referentiels/preuves/AddPreuveComplementaire';
+import PreuveDoc from '../../ui/shared/preuves/Bibliotheque/PreuveDoc';
+import { PreuveReglementaire } from '../../ui/shared/preuves/Bibliotheque/PreuveReglementaire';
+import {
+  TPreuveComplementaire,
+  TPreuveReglementaire,
+} from '../../ui/shared/preuves/Bibliotheque/types';
 import { TActionDef } from './usePreuves';
 
 export type TPreuvesActionProps = {
@@ -70,8 +73,9 @@ export const PreuvesAction = (props: TPreuvesActionProps) => {
         </>
       ) : (
         <p className="fr-text--sm !mb-0 py-4">
-          Il n'y a pas de document attendu pour cette{' '}
-          {withSubActions ? 'action' : 'sous-action'} du référentiel.
+          {`Il n'y a pas de document attendu pour cette ${
+            withSubActions ? 'action' : 'sous-action'
+          } du référentiel.`}
         </p>
       )}
 

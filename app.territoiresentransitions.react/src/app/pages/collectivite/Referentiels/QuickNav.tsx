@@ -3,14 +3,14 @@ import { makeCollectiviteReferentielUrl } from '@/app/app/paths';
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
 import { ActionTitleRead } from '@/app/core-logic/api/endpoints/ActionTitleReadEndpoint';
 import { useCollectiviteId } from '@/app/core-logic/hooks/params';
-import { useActionTitleList } from '@/app/referentiels/referentiel-hooks';
 import {
   actionPath,
   displayName,
   findActionSiblingsOfId,
   findChildren,
   searchAncestors,
-} from '@/app/utils/actions';
+} from '@/app/referentiels/actions.utils';
+import { useActionTitleList } from '@/app/referentiels/referentiel-hooks';
 import { Menu, MenuItem } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

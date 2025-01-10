@@ -1,10 +1,10 @@
 import ActionJustification from '@/app/app/pages/collectivite/EtatDesLieux/Referentiel/SuiviAction/ActionJustification';
 import { TCycleLabellisationStatus } from '@/app/app/pages/collectivite/ParcoursLabellisation/useCycleLabellisation';
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
+import { ActionCommentaire } from '@/app/referentiels/actions/action-commentaire';
 import { useActionSummaryChildren } from '@/app/referentiels/referentiel-hooks';
 import { useActionStatut } from '@/app/referentiels/use-action-statut';
 import { Accordion } from '@/app/ui/Accordion';
-import { ActionCommentaire } from '@/app/ui/shared/actions/ActionCommentaire';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { SuiviScoreRow } from '../data/useScoreRealise';

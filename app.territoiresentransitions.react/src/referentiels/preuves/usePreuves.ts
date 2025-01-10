@@ -2,7 +2,11 @@ import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDe
 import { supabaseClient } from '@/app/core-logic/api/supabase';
 import { useCollectiviteId } from '@/app/core-logic/hooks/params';
 import { useQuery } from 'react-query';
-import { TPreuve, TPreuvesParType, TPreuveType } from './types';
+import {
+  TPreuve,
+  TPreuvesParType,
+  TPreuveType,
+} from '../../ui/shared/preuves/Bibliotheque/types';
 
 export type TActionDef = Pick<
   ActionDefinitionSummary,

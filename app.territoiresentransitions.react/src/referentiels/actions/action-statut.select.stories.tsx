@@ -1,17 +1,17 @@
 import React from 'react';
-import {StoryFn, Meta} from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react';
 import {
   SelectActionStatut,
   TSelectActionStatutProps,
   ITEMS_AVEC_NON_CONCERNE,
-} from './SelectActionStatut';
+} from './action-statut.select';
 
 export default {
   component: SelectActionStatut,
 } as Meta;
 
-const Template: StoryFn<TSelectActionStatutProps> = args => (
-  <div style={{width: 200}}>
+const Template: StoryFn<TSelectActionStatutProps> = (args) => (
+  <div style={{ width: 200 }}>
     <SelectActionStatut {...args} />
   </div>
 );

@@ -1,6 +1,6 @@
 import { useCollectiviteId } from '@/app/core-logic/hooks/params';
+import { useAddPreuveAudit } from '@/app/referentiels/preuves/useAddPreuves';
 import { TAddFileFromLib } from '@/app/ui/shared/preuves/AddPreuveModal/AddFile';
-import { useAddPreuveAudit } from '@/app/ui/shared/preuves/Bibliotheque/useAddPreuves';
 
 type TAddDocs = (demande_id: number) => {
   /** ajoute un fichier sélectionné depuis la bibliothèque */

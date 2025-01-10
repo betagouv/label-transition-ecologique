@@ -8,7 +8,6 @@ import { actionAvancementColors } from '@/app/app/theme';
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
 import { DetailedScore } from '@/app/referentiels/ui/detailed-score/DetailedScore';
 import ProgressBarWithTooltip from '@/app/referentiels/ui/score.progress-bar/ProgressBarWithTooltip';
-import { AvancementValues } from '@/app/ui/referentiels/ScoreDetailleModal/DetailedScore/DetailedScoreSlider';
 import Modal from '@/app/ui/shared/floating-ui/Modal';
 import classNames from 'classnames';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -17,6 +16,7 @@ import {
   AVANCEMENT_DETAILLE_PAR_STATUT,
   getStatusFromIndex,
 } from '../../utils';
+import { AvancementValues } from './DetailedScoreSlider';
 
 type ScoreDetailleModalProps = {
   action: ActionDefinitionSummary;

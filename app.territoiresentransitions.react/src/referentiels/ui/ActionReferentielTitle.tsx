@@ -1,4 +1,4 @@
-import { ActionReferentiel } from '@/app/types/action_referentiel';
+import { ActionReferentiel } from '@/app/referentiels/referentiels.types';
 
 /**
  * @deprecated since new UI, use ActionReferentielDisplayTitle

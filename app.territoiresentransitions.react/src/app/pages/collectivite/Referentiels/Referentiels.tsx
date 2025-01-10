@@ -1,10 +1,10 @@
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
 import { useReferentielId } from '@/app/core-logic/hooks/params';
-import { useReferentielDownToAction } from '@/app/core-logic/hooks/referentiel';
 import { useCurrentCollectivite } from '@/app/core-logic/hooks/useCurrentCollectivite';
-import { Referentiel } from '@/app/types/litterals';
-import ActionProgressBar from '@/app/ui/referentiels/ActionProgressBar';
-import { ExpandableAction } from '@/app/ui/shared/actions/ExpandableAction';
+import { Referentiel } from '@/app/referentiels/litterals';
+import { useReferentielDownToAction } from '@/app/referentiels/referentiel-hooks';
+import ActionProgressBar from '@/app/referentiels/ui/ActionProgressBar';
+import { ExpandableAction } from '@/app/referentiels/actions/ExpandableAction';
 import { useExportScore } from './useExportScore';
 
 const ReferentielHead = (props: { referentiel: ActionDefinitionSummary }) => {

@@ -1,11 +1,11 @@
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
 import ActionProgressBar from '@/app/referentiels/ui/ActionProgressBar';
 import classNames from 'classnames';
-import ScoreDisplay from '../../../../referentiels/ui/ScoreDisplay';
-import HeaderFixed from '../CollectivitePageLayout/HeaderFixed';
-import { SuiviScoreRow } from '../EtatDesLieux/Referentiel/data/useScoreRealise';
-import { PersoPotentiel } from '../PersoPotentielModal/PersoPotentiel';
-import { ActionTopNav } from './ActionNav';
+import HeaderFixed from '../../app/pages/collectivite/CollectivitePageLayout/HeaderFixed';
+import { SuiviScoreRow } from '../../app/pages/collectivite/EtatDesLieux/Referentiel/data/useScoreRealise';
+import { PersoPotentiel } from '../../app/pages/collectivite/PersoPotentielModal/PersoPotentiel';
+import ScoreDisplay from '../ui/ScoreDisplay';
+import { ActionTopNav } from './action.nav';
 import { ActionSidePanelToolbar } from './ActionSidePanelToolbar';
 
 /**

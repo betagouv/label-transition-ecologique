@@ -1,5 +1,5 @@
 import { Views } from '@/api';
-import { Referentiel } from '@/app/types/litterals';
+import { Referentiel } from '@/app/referentiels/litterals';
 
 export type TAuditStatut = 'non_audite' | 'en_cours' | 'audite';
 

@@ -1,13 +1,13 @@
+import { Referentiel } from '@/app/referentiels/litterals';
 import { useActionDownToTache } from '@/app/referentiels/referentiel-hooks';
-import { Referentiel } from '@/app/types/litterals';
 import { lazy } from '@/app/utils/lazy';
 import { renderLoader } from '@/app/utils/renderLoader';
 import { Suspense } from 'react';
 import { useParams } from 'react-router-dom';
-import CollectivitePageLayout from '../CollectivitePageLayout/CollectivitePageLayout';
+import CollectivitePageLayout from '../../app/pages/collectivite/CollectivitePageLayout/CollectivitePageLayout';
 
 const ActionReferentielAvancement = lazy(
-  () => import('@/app/app/pages/collectivite/Referentiels/Action')
+  () => import('@/app/referentiels/actions/action')
 );
 
 export const ActionPage = () => {

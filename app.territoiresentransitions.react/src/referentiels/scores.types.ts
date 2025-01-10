@@ -1,4 +1,4 @@
-import { Referentiel } from '@/app/types/litterals';
+import { Referentiel } from '@/app/referentiels/litterals';
 
 export interface ActionScore {
   referentiel: Referentiel;

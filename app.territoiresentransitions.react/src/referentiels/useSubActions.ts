@@ -1,5 +1,5 @@
 import { supabaseClient } from '@/app/core-logic/api/supabase';
-import { TActionDef } from '@/app/ui/shared/preuves/Bibliotheque/usePreuves';
+import { TActionDef } from '@/app/referentiels/preuves/usePreuves';
 import { useQuery } from 'react-query';
 
 type TFetchedData = {

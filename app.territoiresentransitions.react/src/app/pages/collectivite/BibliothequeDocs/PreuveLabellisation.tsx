@@ -1,5 +1,5 @@
 import { referentielToName } from '@/app/app/labels';
-import { Referentiel } from '@/app/types/litterals';
+import { Referentiel } from '@/app/referentiels/litterals';
 import PreuveDoc from '@/app/ui/shared/preuves/Bibliotheque/PreuveDoc';
 import { TPreuveAuditEtLabellisation } from '@/app/ui/shared/preuves/Bibliotheque/types';
 import { Fragment } from 'react';

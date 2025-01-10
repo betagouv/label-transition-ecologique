@@ -1,8 +1,8 @@
 import { TCycleLabellisationStatus } from '@/app/app/pages/collectivite/ParcoursLabellisation/useCycleLabellisation';
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
+import { ActionCommentaire } from '@/app/referentiels/actions/action-commentaire';
 import { useSortedActionSummaryChildren } from '@/app/referentiels/referentiel-hooks';
 import { phaseToLabel } from '@/app/referentiels/utils';
-import { ActionCommentaire } from '@/app/ui/shared/actions/ActionCommentaire';
 import { Button } from '@/ui';
 import { useState } from 'react';
 import { SuiviScoreRow } from '../data/useScoreRealise';

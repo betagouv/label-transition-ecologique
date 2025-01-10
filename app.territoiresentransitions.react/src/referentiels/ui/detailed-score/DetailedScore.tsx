@@ -3,7 +3,7 @@
  */
 
 import { actionAvancementColors } from '@/app/app/theme';
-import { toPercentString } from '@/app/utils/score';
+import { toPercentString } from '@/app/utils/to-percent-string';
 import { Dispatch, SetStateAction } from 'react';
 import { AvancementValues, DetailedScoreSlider } from './DetailedScoreSlider';
 

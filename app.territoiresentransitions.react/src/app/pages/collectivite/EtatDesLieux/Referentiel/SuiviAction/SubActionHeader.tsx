@@ -1,5 +1,6 @@
 import ActionJustification from '@/app/app/pages/collectivite/EtatDesLieux/Referentiel/SuiviAction/ActionJustification';
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
+import { ActionCommentaire } from '@/app/referentiels/actions/action-commentaire';
 import ActionProgressBar from '@/app/referentiels/ui/ActionProgressBar';
 import {
   ActionStatusDropdown,
@@ -8,7 +9,6 @@ import {
 import ScoreDisplay from '@/app/referentiels/ui/ScoreDisplay';
 import { TActionAvancement } from '@/app/types/alias';
 import { ExpandToggle } from '@/app/ui/icons/ExpandToggle';
-import { ActionCommentaire } from '@/app/ui/shared/actions/ActionCommentaire';
 import { InfoTooltip } from '@/ui';
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';

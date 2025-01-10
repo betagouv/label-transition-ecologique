@@ -3,12 +3,12 @@
  */
 
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
-import { ActionScore } from '@/app/types/ClientScore';
 import {
   TChangeReponse,
   TQuestionReponse,
   TReponse,
-} from '@/app/types/personnalisation';
+} from '@/app/referentiels/personnalisations/personnalisation.types';
+import { ActionScore } from '@/app/referentiels/scores.types';
 import { Accordion } from '@/app/ui/Accordion';
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';

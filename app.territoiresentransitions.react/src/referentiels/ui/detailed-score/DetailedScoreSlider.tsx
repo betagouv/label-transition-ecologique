@@ -1,8 +1,8 @@
 import { actionAvancementColors } from '@/app/app/theme';
+import TagFilters from '@/app/ui/shared/filters/TagFilters';
 import SliderBase from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';
-import TagFilters from '../../../shared/filters/TagFilters';
 
 export type AvancementValues = [number, number, number];
 type SliderValues = [number, number];

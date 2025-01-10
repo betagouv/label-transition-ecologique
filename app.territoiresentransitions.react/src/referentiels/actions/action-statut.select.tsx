@@ -2,7 +2,7 @@ import { avancementToLabel } from '@/app/app/labels';
 import { TActionAvancement, TActionAvancementExt } from '@/app/types/alias';
 import SelectDropdown from '@/app/ui/shared/select/SelectDropdown';
 import classNames from 'classnames';
-import ActionStatutBadge from './ActionStatutBadge';
+import ActionStatutBadge from './action-statut.badge';
 
 export type TSelectActionStatutProps = {
   // item sélectionné (`non_renseigne` si `undefined` ou `null`)

@@ -3,6 +3,10 @@ import { SuiviScoreRow } from '@/app/app/pages/collectivite/EtatDesLieux/Referen
 import { actionAvancementColors } from '@/app/app/theme';
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
 import { useCurrentCollectivite } from '@/app/core-logic/hooks/useCurrentCollectivite';
+import {
+  ITEMS_AVEC_NON_CONCERNE,
+  SelectActionStatut,
+} from '@/app/referentiels/actions/action-statut.select';
 import ProgressBarWithTooltip from '@/app/referentiels/ui/score.progress-bar/ProgressBarWithTooltip';
 import {
   useActionStatut,
@@ -10,10 +14,6 @@ import {
   useSaveActionStatut,
 } from '@/app/referentiels/use-action-statut';
 import { TActionAvancement, TActionAvancementExt } from '@/app/types/alias';
-import {
-  ITEMS_AVEC_NON_CONCERNE,
-  SelectActionStatut,
-} from '@/app/ui/shared/actions/SelectActionStatut';
 import { Button, Tooltip } from '@/ui';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';

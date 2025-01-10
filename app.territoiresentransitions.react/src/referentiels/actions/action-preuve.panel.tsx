@@ -1,8 +1,8 @@
-import { PreuvesAction } from '@/app/ui/shared/preuves/Bibliotheque/PreuvesAction';
+import { PreuvesAction } from '@/app/referentiels/preuves/PreuvesAction';
 import {
   TActionDef,
   usePreuvesParType,
-} from '@/app/ui/shared/preuves/Bibliotheque/usePreuves';
+} from '@/app/referentiels/preuves/usePreuves';
 
 export type TActionPreuvePanelProps = {
   /** Identifiant de l'action ou de la sous-action concernée */

@@ -1,5 +1,4 @@
-import React from 'react';
-import ActionStatutBadge from './ActionStatutBadge';
+import ActionStatutBadge from './action-statut.badge';
 
 export default {
   component: ActionStatutBadge,

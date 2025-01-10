@@ -1,6 +1,6 @@
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
+import { ActionType } from '@/app/referentiels/referentiels.types';
 import { useActionScore } from '@/app/referentiels/score-hooks';
-import { ActionType } from '@/app/types/action_referentiel';
 
 export interface PillParams {
   color: string;

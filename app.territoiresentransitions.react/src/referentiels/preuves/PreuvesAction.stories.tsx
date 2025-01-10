@@ -1,14 +1,14 @@
-import { Meta} from '@storybook/react';
+import { Meta } from '@storybook/react';
 // import { action } from '@storybook/addon-actions';
-import {PreuvesAction} from './PreuvesAction';
+import { PreuvesAction } from './PreuvesAction';
 import {
+  preuveComplementaireFichier,
+  preuveComplementaireLien,
   preuveReglementaireFichier,
   preuveReglementaireLien,
   preuveReglementaireLienSansDescription,
   preuveReglementaireNonRenseignee,
-  preuveComplementaireFichier,
-  preuveComplementaireLien,
-} from './fixture';
+} from '../../ui/shared/preuves/Bibliotheque/fixture';
 
 export default {
   component: PreuvesAction,
@@ -16,7 +16,7 @@ export default {
 
 export const SansPreuvesComplementaires = {
   args: {
-    action: {id: 'cae_1.2.3.4', identifiant: '1.2.3.4', referentiel: 'cae'},
+    action: { id: 'cae_1.2.3.4', identifiant: '1.2.3.4', referentiel: 'cae' },
     reglementaires: [
       preuveReglementaireNonRenseignee,
       preuveReglementaireFichier,
@@ -28,7 +28,7 @@ export const SansPreuvesComplementaires = {
 
 export const AvecPreuvesComplementaires = {
   args: {
-    action: {id: 'cae_1.2.3.4', identifiant: '1.2.3.4', referentiel: 'cae'},
+    action: { id: 'cae_1.2.3.4', identifiant: '1.2.3.4', referentiel: 'cae' },
     reglementaires: [
       preuveReglementaireNonRenseignee,
       preuveReglementaireFichier,
@@ -41,7 +41,7 @@ export const AvecPreuvesComplementaires = {
 
 export const SansPreuvesAttendues = {
   args: {
-    action: {id: 'cae_1.2.3', identifiant: '1.2.3', referentiel: 'cae'},
+    action: { id: 'cae_1.2.3', identifiant: '1.2.3', referentiel: 'cae' },
     withSubActions: true,
     reglementaires: [],
     complementaires: [],
@@ -50,7 +50,7 @@ export const SansPreuvesAttendues = {
 
 export const AvecMessageAvertissement = {
   args: {
-    action: {id: 'cae_1.2.4', identifiant: '1.2.4', referentiel: 'cae'},
+    action: { id: 'cae_1.2.4', identifiant: '1.2.4', referentiel: 'cae' },
     reglementaires: [],
     complementaires: [preuveComplementaireFichier],
     showWarning: true,

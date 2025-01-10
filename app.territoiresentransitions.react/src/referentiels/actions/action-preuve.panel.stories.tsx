@@ -1,8 +1,8 @@
-import { Meta} from '@storybook/react';
-import ActionPreuvePanel from './ActionPreuvePanel';
+import { Meta } from '@storybook/react';
+import ActionPreuvePanel from './action-preuve.panel';
 
 const DEFAULT_ARGS = {
-  action: {id: 'eci_1.1.1', identifiant: '1.1.1', referentiel: 'eci'},
+  action: { id: 'eci_1.1.1', identifiant: '1.1.1', referentiel: 'eci' },
   showWarning: true,
 };
 

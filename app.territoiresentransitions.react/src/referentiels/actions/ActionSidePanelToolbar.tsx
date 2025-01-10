@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react';
 import {
   usePanelDispatch,
   usePanelState,
-} from '../CollectivitePageLayout/Panel/PanelContext';
-import ActionDiscussionsPanel from './ActionDiscussions/ActionDiscussionsPanel';
-import { ActionInfoPanel } from './ActionInfo/ActionInfoPanel';
+} from '../../app/pages/collectivite/CollectivitePageLayout/Panel/PanelContext';
+import ActionDiscussionsPanel from '../../app/pages/collectivite/Referentiels/ActionDiscussions/ActionDiscussionsPanel';
+import { ActionInfoPanel } from '../../app/pages/collectivite/Referentiels/ActionInfo/ActionInfoPanel';
 
 export type Props = {
   action: ActionDefinitionSummary;

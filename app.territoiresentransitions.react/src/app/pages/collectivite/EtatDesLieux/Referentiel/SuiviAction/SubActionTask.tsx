@@ -1,7 +1,7 @@
 import { ActionDefinitionSummary } from '@/app/core-logic/api/endpoints/ActionDefinitionSummaryReadEndpoint';
+import { ActionCommentaire } from '@/app/referentiels/actions/action-commentaire';
 import { StatusToSavePayload } from '@/app/referentiels/ui/ActionStatusDropdown';
 import { useActionCommentaire } from '@/app/referentiels/use-action-commentaire';
-import { ActionCommentaire } from '@/app/ui/shared/actions/ActionCommentaire';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { SuiviScoreRow } from '../data/useScoreRealise';

@@ -1,11 +1,11 @@
 import { useCurrentCollectivite } from '@/app/core-logic/hooks/useCurrentCollectivite';
+import { TActionDef } from '@/app/referentiels/preuves/usePreuves';
 import { AddPreuveModal } from '@/app/ui/shared/preuves/AddPreuveModal';
-import { TActionDef } from '@/app/ui/shared/preuves/Bibliotheque/usePreuves';
 import SelectDropdown from '@/app/ui/shared/select/SelectDropdown';
 import { Modal } from '@/ui';
 import { useState } from 'react';
+import { useSubActionOptionsListe } from '../useSubActions';
 import { useAddPreuveComplementaireToAction } from './useAddPreuveToAction';
-import { useSubActionOptionsListe } from './useSubActions';
 
 export type TAddPreuveButtonProps = {
   /** Identifiant de l'action concernée */

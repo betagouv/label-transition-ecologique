@@ -9,7 +9,7 @@ import {
   useReferentielId,
   useReferentielVue,
 } from '@/app/core-logic/hooks/params';
-import { ReferentielOfIndicateur } from '@/app/types/litterals';
+import { ReferentielOfIndicateur } from '@/app/referentiels/litterals';
 import { Tab, Tabs } from '@/app/ui/shared/Tabs';
 import { useRouter } from 'next/navigation';
 import AidePriorisation from '../AidePriorisation';
