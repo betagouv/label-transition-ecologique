@@ -1,28 +1,32 @@
 import classNames from 'classnames';
 import { useState } from 'react';
 
-import { Button, Card, CardProps, Checkbox, Notification, Tooltip } from '@/ui';
+import {
+  Button,
+  Card,
+  CardProps,
+  Checkbox,
+  EmptyCard,
+  Notification,
+  Tooltip,
+} from '@/ui';
 
 import {
   IndicateurChartInfo,
   IndicateurListItem,
 } from '@/api/indicateurs/domain';
-import IndicateurChart, {
-  IndicateurChartData,
-  IndicateurChartProps,
-} from '@/app/app/pages/collectivite/Indicateurs/chart/IndicateurChart';
+import { transformeValeurs } from '@/app/app/pages/collectivite/Indicateurs/Indicateur/detail/transformeValeurs';
 import { useIndicateurChartInfo } from '@/app/app/pages/collectivite/Indicateurs/chart/useIndicateurChartInfo';
-import { prepareData } from '@/app/app/pages/collectivite/Indicateurs/chart/utils';
 import BadgeIndicateurPerso from '@/app/app/pages/collectivite/Indicateurs/components/BadgeIndicateurPerso';
 import BadgeOpenData from '@/app/app/pages/collectivite/Indicateurs/components/BadgeOpenData';
-import { transformeValeurs } from '@/app/app/pages/collectivite/Indicateurs/Indicateur/detail/transformeValeurs';
 import IndicateurCardOptions from '@/app/app/pages/collectivite/Indicateurs/lists/IndicateurCard/IndicateurCardOptions';
-import {
-  generateLineLegendItems,
-  getLeftLineChartMargin,
-} from '@/app/ui/charts/Line/utils';
 import PictoIndicateurComplet from '@/app/ui/pictogrammes/PictoIndicateurComplet';
+import PictoIndicateurVide from '@/app/ui/pictogrammes/PictoIndicateurVide';
 import { BadgeACompleter } from '@/app/ui/shared/Badge/BadgeACompleter';
+import DownloadIndicateurChartModal from '../../chart/DownloadIndicateurChart';
+import IndicateurChart, {
+  IndicateurChartData,
+} from '../../chart/IndicateurChart';
 import { getIndicateurRestant } from './utils';
 
 /** Props de la carte Indicateur */
@@ -44,8 +48,6 @@ export type IndicateurCardProps = {
   href?: string;
   /** ClassName de la carte */
   className?: string;
-  /** Props du composant `IndicateurChart` sans ce qui est relatif aux données */
-  chart?: Omit<IndicateurChartProps, 'data' | 'isLoading'>;
   /** Affiche ou masque le graphique */
   hideChart?: boolean;
   /** Affiche ou masque le graphique quand il n'y a pas de valeur */
@@ -82,12 +84,12 @@ const IndicateurCard = ({
   );
 
   // sépare les données objectifs/résultats
-  const { valeurs } = transformeValeurs(chartInfo?.valeurs || []);
+  const { objectifs, resultats } = transformeValeurs(chartInfo?.valeurs || []);
 
   // Assemblage des données pour le graphique
   const data = {
     unite: chartInfo?.unite,
-    valeurs,
+    valeurs: { objectifs, resultats },
   };
 
   return (
@@ -120,7 +122,6 @@ export const IndicateurCardBase = ({
   className,
   isLoading,
   definition,
-  chart,
   chartInfo,
   isEditable = false,
   hideChart = false,
@@ -133,7 +134,8 @@ export const IndicateurCardBase = ({
 
   const showChart =
     (!hideChart && !hideChartWithoutValue) ||
-    (hideChartWithoutValue && data.valeurs.length > 0);
+    (hideChartWithoutValue &&
+      (data.valeurs.objectifs.length > 0 || data.valeurs.resultats.length > 0));
 
   const isIndicateurParent = chartInfo?.enfants && chartInfo.enfants.length > 0;
 
@@ -150,208 +152,178 @@ export const IndicateurCardBase = ({
 
   /** Rempli ne peut pas être utilisé pour l'affichage car les objectifs ne sont pas pris en compte mais doivent quand même apparaître */
   const hasValeurOrObjectif =
-    data.valeurs.filter((v) => typeof v.valeur === 'number').length > 0;
-
-  const isNotLoadingNotFilled = !isLoading && !hasValeurOrObjectif;
+    [...data.valeurs.objectifs, ...data.valeurs.resultats].filter(
+      (v) => typeof v.valeur === 'number'
+    ).length > 0;
 
   const isACompleter = chartInfo?.sansValeur
     ? indicateursACompleterRestant > 0
     : !chartInfo?.rempli;
 
   return (
-    <div className="group relative h-full">
-      {/** Cadenas indicateur privé */}
-      {chartInfo?.confidentiel && (
-        <Tooltip label="La dernière valeur de cet indicateur est en mode privé">
-          <div className="absolute -top-5 left-5">
-            <Notification icon="lock-fill" size="sm" classname="w-9 h-9" />
-          </div>
-        </Tooltip>
-      )}
-      {/** Menus d'édition */}
-      {!readonly && isEditable && (
-        <IndicateurCardOptions
-          definition={definition}
-          isFavoriCollectivite={chartInfo?.favoriCollectivite}
-          otherMenuActions={otherMenuActions}
-          chartDownloadSettings={{
-            showTrigger: showChart && hasValeurOrObjectif,
-            openModal: () => setIsDownloadChartOpen(true),
-          }}
-        />
-      )}
-      <Card
-        dataTest={`chart-${definition.id}`}
-        className={classNames(
-          'h-full font-normal !gap-3 !p-6',
-          {
-            'border-primary-7': selectState?.checkbox && selectState?.selected,
-          },
-          className
+    <>
+      <div className="group relative h-full">
+        {/** Cadenas indicateur privé */}
+        {chartInfo?.confidentiel && (
+          <Tooltip label="La dernière valeur de cet indicateur est en mode privé">
+            <div className="absolute -top-5 left-5">
+              <Notification icon="lock-fill" size="sm" classname="w-9 h-9" />
+            </div>
+          </Tooltip>
         )}
-        href={href}
-        {...card}
-      >
-        {selectState?.checkbox ? (
-          <Checkbox
-            checked={selectState.selected}
-            onChange={() =>
-              selectState.setSelected({
-                id: definition.id,
-                titre: definition.titre,
-                estPerso: definition.estPerso,
-                identifiant: definition.identifiant || null,
-                // description: chartInfo?.titreLong ?? '',
-                // unite: chartInfo?.unite ?? '',
-                hasOpenData: definition.hasOpenData,
-              })
-            }
-            label={chartInfo?.titre}
-            labelClassname="!font-bold"
+
+        {/** Menus d'édition */}
+        {!readonly && isEditable && (
+          <IndicateurCardOptions
+            definition={definition}
+            isFavoriCollectivite={chartInfo?.favoriCollectivite}
+            otherMenuActions={otherMenuActions}
+            chartDownloadSettings={{
+              showTrigger: showChart && hasValeurOrObjectif,
+              openModal: () => setIsDownloadChartOpen(true),
+            }}
           />
-        ) : (
-          <>
-            <div className="max-w-full font-bold line-clamp-2">
-              {chartInfo?.titre}
-            </div>
-            <div className="flex items-center gap-2 flex-wrap">
-              <BadgeACompleter a_completer={isACompleter} size="sm" />
-              {definition.estPerso && <BadgeIndicateurPerso size="sm" />}
-              {definition.hasOpenData && <BadgeOpenData size="sm" />}
-            </div>
-          </>
         )}
-        {/** Graphique */}
-        {showChart && (
-          <>
-            {isIndicateurParent &&
-            chartInfo?.sansValeur &&
-            indicateursACompleterRestant === 0 ? (
-              <div className="flex flex-col grow justify-center items-center gap-3 min-h-[18rem] bg-primary-0 rounded-lg">
-                <PictoIndicateurComplet />
-                <div className="font-medium text-primary-8">
-                  {totalNbIndicateurs}/{totalNbIndicateurs} complétés
-                </div>
+
+        {/* Carte indicateur */}
+        <Card
+          dataTest={`chart-${definition.id}`}
+          className={classNames('h-full font-normal !gap-3 !p-6', className)}
+          isSelected={selectState?.checkbox && selectState?.selected}
+          href={href}
+          {...card}
+        >
+          {/* En-tête de la carte, avec ou sans checkbox */}
+          {selectState?.checkbox ? (
+            <Checkbox
+              checked={selectState.selected}
+              onChange={() =>
+                selectState.setSelected({
+                  id: definition.id,
+                  titre: definition.titre,
+                  estPerso: definition.estPerso,
+                  identifiant: definition.identifiant || null,
+                  // description: chartInfo?.titreLong ?? '',
+                  // unite: chartInfo?.unite ?? '',
+                  hasOpenData: definition.hasOpenData,
+                })
+              }
+              label={chartInfo?.titre}
+              labelClassname="!font-bold"
+            />
+          ) : (
+            <>
+              <div className="max-w-full font-bold line-clamp-2 text-primary-10">
+                {chartInfo?.titre}{' '}
+                {chartInfo?.unite && (
+                  <span className="font-normal text-grey-6">
+                    ({chartInfo?.unite})
+                  </span>
+                )}
               </div>
-            ) : (
-              <div
-                className={classNames('flex flex-col grow', {
-                  'min-h-[18rem] justify-center items-center gap-3 bg-primary-0 rounded-lg':
-                    isNotLoadingNotFilled,
-                })}
-              >
+              <div className="flex items-center gap-2 flex-wrap">
+                <BadgeACompleter a_completer={isACompleter} size="sm" />
+                {definition.estPerso && <BadgeIndicateurPerso size="sm" />}
+                {definition.hasOpenData && <BadgeOpenData size="sm" />}
+              </div>
+            </>
+          )}
+
+          {/** Graphique */}
+          {showChart && (
+            <div className="mt-auto">
+              {isIndicateurParent &&
+              chartInfo?.sansValeur &&
+              indicateursACompleterRestant === 0 ? (
+                <EmptyCard
+                  size="xs"
+                  className="h-80"
+                  picto={(props) => <PictoIndicateurComplet {...props} />}
+                  subTitle={`${totalNbIndicateurs}/${totalNbIndicateurs} complétés`}
+                />
+              ) : data.valeurs.objectifs.length === 0 &&
+                data.valeurs.resultats.length === 0 ? (
+                <EmptyCard
+                  size="xs"
+                  className="h-80"
+                  picto={(props) => <PictoIndicateurVide {...props} />}
+                  actions={
+                    !readonly && !!href
+                      ? [{ children: "Compléter l'indicateur" }]
+                      : undefined
+                  }
+                />
+              ) : (
                 <IndicateurChart
                   data={data}
                   isLoading={isLoading}
-                  className={classNames(
-                    { 'grow-0': isNotLoadingNotFilled },
-                    { '!items-end': chartInfo?.rempli },
-                    chart?.className
-                  )}
-                  chartConfig={{
-                    className: '!h-[14rem]',
-                    theme: {
-                      axis: {
-                        ticks: {
-                          text: {
-                            fontSize: 12,
-                          },
-                        },
-                      },
-                    },
-                    margin: {
-                      top: 16,
-                      right: 4,
-                      bottom: 32,
-                      left: getLeftLineChartMargin(data.valeurs) + 4,
-                    },
-                    gridXValues: 4,
-                    gridYValues: 4,
-                    ...chart?.chartConfig,
-                  }}
-                  chartInfos={{
-                    modal: {
-                      isOpen: isDownloadChartOpen,
-                      setIsOpen: setIsDownloadChartOpen,
-                    },
-                    fileName: definition.titre,
-                    title: definition.titre,
-                  }}
+                  variant="thumbnail"
                 />
-                {isNotLoadingNotFilled && !readonly && !!href && (
-                  <Button size="xs" className="mx-auto">
-                    Compléter l&apos;indicateur
-                  </Button>
-                )}
-                {/** Légende */}
-                {hasValeurOrObjectif && (
-                  <div className="flex flex-wrap gap-4 ml-2 mt-2">
-                    {generateLineLegendItems(prepareData(data.valeurs)).map(
-                      ({ name, color, symbole }) => (
-                        <div key={name} className="flex items-center gap-2">
-                          {symbole ? (
-                            symbole(color)
-                          ) : (
-                            <div
-                              className="w-3 h-3 rounded-full"
-                              style={{ backgroundColor: color }}
-                            />
-                          )}
-                          <div className="text-xs text-grey-8">{name}</div>
-                        </div>
-                      )
+              )}
+            </div>
+          )}
+
+          {/** Partie sous le séparateur horizontal */}
+          <div
+            className={classNames({ 'h-7': showChart, 'mt-auto': !showChart })}
+          >
+            {chartInfo &&
+              (showChart ? (
+                <>
+                  {/** Barre horizontale */}
+                  {hasValeurOrObjectif &&
+                    ((isIndicateurParent &&
+                      !(
+                        chartInfo?.sansValeur &&
+                        indicateursACompleterRestant === 0
+                      )) ||
+                      chartInfo.participationScore) && (
+                      <div className="h-px bg-primary-3" />
                     )}
-                  </div>
-                )}
-              </div>
-            )}
-          </>
-        )}
-        {/** Partie sous le séparateur horizontal */}
-        {chartInfo &&
-          (showChart ? (
-            <>
-              {/** Barre horizontale */}
-              {hasValeurOrObjectif &&
-                (isIndicateurParent || chartInfo.participationScore) && (
-                  <div className="h-px bg-primary-3" />
-                )}
-              {(isIndicateurParent || chartInfo.participationScore) && (
-                <div className="flex flex-wrap gap-2 items-center text-sm text-grey-8">
-                  {/* Nombre d'indicateurs */}
-                  {isIndicateurParent && totalNbIndicateurs && (
-                    <div>
-                      {totalNbIndicateurs - indicateursACompleterRestant}/
-                      {totalNbIndicateurs} indicateur
-                      {totalNbIndicateurs > 1 && 's'}
+                  {(isIndicateurParent || chartInfo.participationScore) && (
+                    <div className="flex flex-wrap gap-2 items-center text-xs text-grey-8 mt-3">
+                      {/* Nombre d'indicateurs */}
+                      {isIndicateurParent && totalNbIndicateurs && (
+                        <div>
+                          {totalNbIndicateurs - indicateursACompleterRestant}/
+                          {totalNbIndicateurs} indicateur
+                          {totalNbIndicateurs > 1 && 's'}
+                        </div>
+                      )}
+                      {/** Barre verticale */}
+                      {isIndicateurParent &&
+                        totalNbIndicateurs &&
+                        chartInfo.participationScore && (
+                          <div className="w-px h-3 bg-grey-5" />
+                        )}
+                      {/** Participation au score */}
+                      {chartInfo.participationScore && (
+                        <div>Participe au score Climat Air Énergie</div>
+                      )}
                     </div>
                   )}
-                  {/** Barre verticale */}
-                  {isIndicateurParent &&
-                    totalNbIndicateurs &&
-                    chartInfo.participationScore && (
-                      <div className="w-px h-3 bg-grey-5" />
-                    )}
-                  {/** Participation au score */}
-                  {chartInfo.participationScore && (
-                    <div>Participe au score Climat Air Énergie</div>
-                  )}
-                </div>
-              )}
-            </>
-          ) : (
-            isACompleter &&
-            !readonly &&
-            href && (
-              <>
-                {/** Barre horizontale */}
-                <div className="h-px bg-primary-3" />
-                {/** Compléter indicateur bouton */}
-                <Button size="xs">Compléter l’indicateur</Button>
-              </>
-            )
-          ))}
-      </Card>
-    </div>
+                </>
+              ) : (
+                isACompleter &&
+                !readonly &&
+                href && (
+                  // Compléter indicateur bouton
+                  <Button size="xs">Compléter l’indicateur</Button>
+                )
+              ))}
+          </div>
+        </Card>
+      </div>
+
+      <DownloadIndicateurChartModal
+        openState={{
+          isOpen: isDownloadChartOpen,
+          setIsOpen: setIsDownloadChartOpen,
+        }}
+        data={data}
+        isLoading={isLoading}
+        title={definition?.titre}
+      />
+    </>
   );
 };

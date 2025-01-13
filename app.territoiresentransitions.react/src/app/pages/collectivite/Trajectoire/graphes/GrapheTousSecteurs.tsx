@@ -1,5 +1,10 @@
-import {Dataset, makeLineSeries, makeOption, makeStackedSeries} from './utils';
-import {ReactECharts} from './ReactECharts';
+import {
+  Dataset,
+  ReactECharts,
+  makeLineSeries,
+  makeOption,
+  makeStackedSeries,
+} from '@/app/ui/charts/echarts';
 
 export type GrapheTousSecteursProps = {
   titre: string;

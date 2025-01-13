@@ -32,12 +32,14 @@ const DEFAULT_SETTINGS: SetOptionOpts = {
 
 export function ReactECharts({
   option,
-  style = DEFAULT_STYLE,
-  settings = DEFAULT_SETTINGS,
+  style = {},
+  settings = {},
   loading,
   theme,
 }: ReactEChartsProps): JSX.Element {
   const chartRef = useRef<HTMLDivElement>(null);
+  const chartStyle = { ...DEFAULT_STYLE, ...style };
+  const chatSettings = { ...DEFAULT_SETTINGS, ...settings };
 
   useEffect(() => {
     // Initialize chart
@@ -64,9 +66,9 @@ export function ReactECharts({
     // Update chart
     if (chartRef.current !== null) {
       const chart = getInstanceByDom(chartRef.current);
-      chart?.setOption(option, settings);
+      chart?.setOption(option, chatSettings);
     }
-  }, [option, settings, theme]); // Whenever theme changes we need to add option and setting due to it being deleted in cleanup function
+  }, [option, chatSettings, theme]); // Whenever theme changes we need to add option and setting due to it being deleted in cleanup function
 
   useEffect(() => {
     // Update chart
@@ -82,5 +84,5 @@ export function ReactECharts({
     }
   }, [loading, theme]);
 
-  return <div ref={chartRef} style={{ width: '100%', ...style }} />;
+  return <div ref={chartRef} style={{ width: '100%', ...chartStyle }} />;
 }
