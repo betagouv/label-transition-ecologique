@@ -282,18 +282,25 @@ describe('Calcul de trajectoire SNBC', () => {
       });
   }, 10000);
 
-  it(`Calcul sans droit suffisant (uniquement lecture)`, () => {
+  it(`Calcul sans droit suffisant - visite`, () => {
     return request(app.getHttpServer())
-      .get('/trajectoires/snbc?collectiviteId=3895')
+      .get('/trajectoires/snbc?collectiviteId=3896')
       .set('Authorization', `Bearer ${yoloDodoToken}`)
       .expect(401)
       .expect({
         message:
-          "Droits insuffisants, l'utilisateur 17440546-f389-4d4f-bfdb-b0c94a1bd0f9 n'a pas l'autorisation indicateurs.trajectoires.edition sur la ressource Collectivité 3895",
+          "Droits insuffisants, l'utilisateur 17440546-f389-4d4f-bfdb-b0c94a1bd0f9 n'a pas l'autorisation indicateurs.trajectoires.lecture sur la ressource Collectivité 3896",
         error: 'Unauthorized',
         statusCode: 401,
       });
   });
+
+  it(`Calcul avec droit suffisant - lecture`, async () => {
+    return request(app.getHttpServer())
+      .get('/trajectoires/snbc?collectiviteId=3895')
+      .set('Authorization', `Bearer ${yoloDodoToken}`)
+      .expect(200);
+  }, 30000);
 
   it(`Verification et calcul avec donnees completes`, async () => {
     // Suppression de la trajectoire snbc existante si le test est joué plusieurs fois

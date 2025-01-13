@@ -105,6 +105,12 @@ export const useFiltersToBadges = ({ filters, customValues }: Args) => {
             ?.map((service) => service.nom)
             .join(', ')}`
         );
+      } else if (key === 'libreTags') {
+        badgeValues.push(
+          `Tags personnalisés : ${mergedFilters[key]
+            ?.map((i) => i.nom)
+            .join(', ')}`
+        );
       } else if (key === 'thematiques') {
         badgeValues.push(
           `Thématique : ${mergedFilters[key]

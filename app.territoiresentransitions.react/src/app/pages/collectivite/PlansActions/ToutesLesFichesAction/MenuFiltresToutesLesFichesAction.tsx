@@ -25,6 +25,7 @@ import {
   SelectOption,
 } from '@/ui';
 import { useRef } from 'react';
+import TagsSuiviPersoDropdown from '../../../../../ui/dropdownLists/TagsSuiviPersoDropdown/TagsSuiviPersoDropdown';
 
 type Props = {
   filters: Filtre;
@@ -103,6 +104,21 @@ const MenuFiltresToutesLesFichesAction = ({ filters, setFilters }: Props) => {
                   ...rest,
                   ...(structures
                     ? { structurePiloteIds: structures.map((s) => s.id) }
+                    : {}),
+                });
+              }}
+            />
+          </Field>
+
+          <Field title="Tags personnalisés">
+            <TagsSuiviPersoDropdown
+              values={filters.libreTagsIds}
+              onChange={({ libresTag }) => {
+                const { libreTagsIds, ...rest } = filters;
+                setFilters({
+                  ...rest,
+                  ...(libresTag
+                    ? { libreTagsIds: libresTag.map((t) => t.id) }
                     : {}),
                 });
               }}

@@ -27,6 +27,7 @@ import { FicheResume } from 'packages/api/src/plan-actions';
 import ActionsGroupeesMenu from '../ActionsGroupees/ActionsGroupeesMenu';
 import EmptyFichePicto from '../FicheAction/FichesLiees/EmptyFichePicto';
 import { useCreateFicheAction } from '../FicheAction/data/useCreateFicheAction';
+import { useFicheActionCount } from '../FicheAction/data/useFicheActionCount';
 import { useCreatePlanAction } from '../PlanAction/data/useUpsertAxe';
 
 type sortByOptionsType = SortFichesAction & {
@@ -140,7 +141,7 @@ const FichesActionListe = ({
   const { data, isLoading } = useFicheResumesFetch({
     options: ficheResumesOptions,
   });
-  const hasFiches = !!data?.data?.length;
+  const { count: hasFiches } = useFicheActionCount();
 
   /** Gère les fiches sélectionnées pour les actions groupées */
   const handleSelectFiche = (fiche: FicheResume) => {
@@ -352,15 +353,14 @@ const FichesActionListe = ({
                   />
                 ))}
               </div>
-              <div className="flex mt-16">
-                <Pagination
-                  className="mx-auto"
-                  selectedPage={currentPage}
-                  nbOfElements={countTotal}
-                  maxElementsPerPage={maxNbOfCards}
-                  onChange={(page) => setCurrentPage(page)}
-                />
-              </div>
+              <Pagination
+                className="mx-auto mt-16"
+                selectedPage={currentPage}
+                nbOfElements={countTotal}
+                maxElementsPerPage={maxNbOfCards}
+                idToScrollTo="app-header"
+                onChange={setCurrentPage}
+              />
             </div>
           )}
 
